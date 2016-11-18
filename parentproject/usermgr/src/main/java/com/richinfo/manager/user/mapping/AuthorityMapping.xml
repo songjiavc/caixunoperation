@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richinfo.manager.user.mapping.AuthorityMapping">
+
+	<resultMap type="BaseModel" id="baseModelMap">
+		<result property="creater" column="creater" />  
+        <result property="createTime" column="create_time" />  
+        <result property="updater" column="updater" />
+        <result property="updateTime" column="update_time" />  
+        <result property="status" column="status" />  
+	</resultMap>
+	
+	<resultMap type="com.richinfo.manager.user.model.Authority" id="authMap" extends="baseModelMap">
+        <id property="id" column="id" />
+        <result property="code" column="code"/>
+        <result property="authName" column="auth_name" />
+        <result property="parentAuthId" column="parant_auth_id" /> 
+        <result property="menuUrl" column="menu_url" /> 
+        <result property="authImg" column="auth_img" /> 
+        <collection property="roleList" ofType="com.richinfo.manager.user.model.Role" column="id">
+        </collection>
+    </resultMap>
+    
+    <select id="getAuthById" parameterType="java.lang.String" resultMap="authMap">
+    	SELECT
+    		* 
+    	FROM 
+    		T_YWPT_AUTHORITY
+    	WHERE 
+    		ID = #{id}
+    </select>
+    
+    <insert id="insertAuthority" parameterType="com.richinfo.manager.user.model.Authority">
+    	<selectKey keyProperty="id" resultType="String" order="BEFORE">
+        	select sys_guid() from dual
+    	</selectKey>
+    	INSERT INTO T_YWPT_AUTHORITY(id,code,auth_name,parant_auth_id,menu_url,auth_img,status,creater,create_time)
+    	VALUSES(#id,#code,#authName,#parentAuthId,#menuUrl,#authImg,#status,#creater,#create_time)
+    </insert>
+    
+    <delete id="deleteAuthorityById" parameterType="String">
+    	DELETE FROM
+    		T_YWPT_AUTHORITY
+    	WHERE 
+    		ID = #id;
+    </delete>
+    
+</mapper>

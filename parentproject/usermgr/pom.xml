@@ -101,42 +101,36 @@
            <artifactId>jackson-mapper-asl</artifactId>
            <version>1.9.4</version>
      </dependency>
-    	<!-- spring-data-jpa start -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
-			<version>1.7.1.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>1.5.1.RELEASE</version>
-		</dependency>
-		<!-- spring-data-jpa end -->
-		
-		<!-- hibernate4 start -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<!-- hibernate4 start -->
+     <!-- mybatis start -->
+     <dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis-spring</artifactId>
+	    <version>1.3.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis</artifactId>
+	    <version>3.4.1</version>
+	</dependency>
+	<!-- mybatis end  -->
 		<!-- 数据库依赖 -->
-		<!-- mysql数据库驱动 -->
+		<!-- oracle数据库驱动 -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.21</version>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc14</artifactId>
+		    <version>10.2.0.3.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.1.15</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid</artifactId>
+		    <version>1.0.26</version>
 		</dependency>
 		<!-- oracle11g数据库驱动 <dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc6</artifactId> <version>${oracle.version}</version> 
 			</dependency> -->

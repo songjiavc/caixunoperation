@@ -1,127 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee    
-    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" > 
-  <display-name>Archetype Created Web Application</display-name>
-   <!-- Spring-MVC的请求转发器 -->
-  <servlet>
-	  <servlet-name>spring-mvc</servlet-name>
-	  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	  <init-param>
-		  <param-name>contextConfigLocation</param-name>
-		  <param-value>classpath:springmvc-servlet.xml</param-value>
-	  </init-param>
-	  <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-  <servlet-name>spring-mvc</servlet-name>
-  <url-pattern>/</url-pattern>
-  </servlet-mapping>
-  
-    <!-- Spring配置 -->   
-  <listener>  
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>   
-  </listener> 
-  <!-- 指定Spring Bean的配置文件所在目录。默认配置在WEB-INF目录下 -->  
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>mybatis</display-name>
   <context-param>
-  <param-name>contextConfigLocation</param-name>
-  <param-value>classpath:applicationContext.xml</param-value>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>
   </context-param>
-
-  
-  <!-- 编码过滤器 -->
   <filter>
-  	<filter-name>encodingFilter</filter-name>
-  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-  	<init-param>
-    	<param-name>encoding</param-name>
-    	<param-value>UTF-8</param-value>
-  	</init-param>
-  	<init-param>
-    	<param-name>forceEncoding</param-name>
-    	<param-value>true</param-value>
-  	</init-param>
+    <description>字符集过滤器</description>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <description>字符集编码</description>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
   </filter>
   <filter-mapping>
-  	<filter-name>encodingFilter</filter-name>
-  	<url-pattern>/*</url-pattern>
-  </filter-mapping> 
-
-
-  <!-- 解决spring data jpa 事务懒加载 -->  
-  <filter>  
-      <filter-name>openEntityManagerInViewFilter</filter-name>  
-      <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>  
-  </filter>  
-  <filter-mapping>  
-      <filter-name>openEntityManagerInViewFilter</filter-name>  
-      <url-pattern>/*</url-pattern>  
-  </filter-mapping> 
-  
-  <!-- session用不过期，在 version="2.5"下有效-->
-  <session-config>       
-      <session-timeout>0</session-timeout>   
-  </session-config> 
-  
-  
-	<!-- 文件上传start-->
-	<servlet>
-    	<description>This is the description of my J2EE component</description>
-    	<display-name>This is the display name of my J2EE component</display-name>
-    	<servlet-name>Upload</servlet-name>
-    	<servlet-class>com.sdf.manager.servlet.Upload</servlet-class>
-  	</servlet>
-  	<servlet-mapping>
-    	<servlet-name>Upload</servlet-name>
-    	<url-pattern>/servlet/Upload</url-pattern>
-  	</servlet-mapping>
-  	<!-- 文件上传end-->
-  	
-  	<!-- apk文件上传start-->
-	<servlet>
-    	<description>This is the description of my J2EE component</description>
-    	<display-name>This is the display name of my J2EE component</display-name>
-    	<servlet-name>UploadApk</servlet-name>
-    	<servlet-class>com.sdf.manager.servlet.UploadApk</servlet-class>
-  	</servlet>
-  	<servlet-mapping>
-    	<servlet-name>UploadApk</servlet-name>
-    	<url-pattern>/servlet/UploadApk</url-pattern>
-  	</servlet-mapping>
-  	<!-- apk文件上传end-->
-  	
-  	<!-- 文章图片文件上传start-->
-	<servlet>
-    	<description>This is the description of my J2EE component</description>
-    	<display-name>This is the display name of my J2EE component</display-name>
-    	<servlet-name>UploadArticleImg</servlet-name>
-    	<servlet-class>com.sdf.manager.servlet.UploadArticleImg</servlet-class>
-  	</servlet>
-  	<servlet-mapping>
-    	<servlet-name>UploadArticleImg</servlet-name>
-    	<url-pattern>/servlet/UploadArticleImg</url-pattern>
-  	</servlet-mapping>
-  	<!-- 文章图片文件上传end-->
-  	
-  	<!-- 图谜字谜图片文件上传start-->
-	<servlet>
-    	<description>This is the description of my J2EE component</description>
-    	<display-name>This is the display name of my J2EE component</display-name>
-    	<servlet-name>UploadFAPAppImg</servlet-name>
-    	<servlet-class>com.sdf.manager.servlet.UploadFAPAppImg</servlet-class>
-  	</servlet>
-  	<servlet-mapping>
-    	<servlet-name>UploadFAPAppImg</servlet-name>
-    	<url-pattern>/servlet/UploadFAPAppImg</url-pattern>
-  	</servlet-mapping>
-  	<!-- 图谜字谜图片文件上传end-->
-  
-  
-   <!-- 设置默认加载首页 -->
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>com.dream.dzzst.filter.login.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>*.action</url-pattern>
+  </filter-mapping>
+  <listener>
+    <description>spring监听器</description>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.dream.dzzst.listener.InitDictListener</listener-class>
+  </listener>
+  <servlet>
+    <description>spring mvc servlet</description>
+    <servlet-name>springMvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <description>spring mvc 配置文件</description>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-mvc.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springMvc</servlet-name>
+    <url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>com.richinfo.login.servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>*.login</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
-        <welcome-file>/index.jsp</welcome-file>
+    <welcome-file>/index.jsp</welcome-file>
   </welcome-file-list>
-  
+  <session-config>
+    <session-timeout>15</session-timeout>
+  </session-config>
 </web-app>
-
