@@ -21,7 +21,7 @@
   </filter-mapping>
   <filter>
     <filter-name>loginFilter</filter-name>
-    <filter-class>com.dream.dzzst.filter.login.LoginFilter</filter-class>
+    <filter-class>com.richinfo.login.filter.LoginFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>loginFilter</filter-name>
@@ -33,9 +33,6 @@
   </listener>
   <listener>
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-  </listener>
-  <listener>
-    <listener-class>com.dream.dzzst.listener.InitDictListener</listener-class>
   </listener>
   <servlet>
     <description>spring mvc servlet</description>
@@ -61,7 +58,7 @@
     <url-pattern>*.login</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>/index.jsp</welcome-file>
+    <welcome-file>/login.jsp</welcome-file>
   </welcome-file-list>
   <session-config>
     <session-timeout>15</session-timeout>

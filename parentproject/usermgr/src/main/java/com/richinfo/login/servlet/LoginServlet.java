@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.richinfo.login.service.LoginService;
+import com.richinfo.manager.user.service.login.LoginService;
 
 /** 
   * @ClassName: LoginServlet 
@@ -45,11 +45,10 @@ public class LoginServlet extends HttpServlet {
 		boolean loginResult = bs.userLogin(request);
 		if (loginResult) {
 			//返回到动态加载页面
-			request.getRequestDispatcher("/WEB-INF/jsp/proList.jsp").forward(request, response);
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 		} else {
-			request.getRequestDispatcher("/login.jsp").forward(request,
-					response);
+			request.getRequestDispatcher("/login.jsp").forward(request,response);
 		}
 	}
 }

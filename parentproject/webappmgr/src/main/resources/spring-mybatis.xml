@@ -58,7 +58,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage"
-			value="com.dream.dzzst.dao.login,com.dream.dzzst.dao.fast3,com.dream.dzzst.dao.fivein20" />
+			value="com.richinfo.manager.**.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 	<!-- myBatis文件 -->

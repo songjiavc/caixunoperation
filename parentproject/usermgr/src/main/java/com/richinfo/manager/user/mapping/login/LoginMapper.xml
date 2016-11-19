@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dream.dzzst.dao.login.LoginMapper">
-	<resultMap id="BaseResultMap" type="com.dream.dzzst.model.login.StationDto">
+<mapper namespace="com.richinfo.manager.user.dao.login.LoginMapper">
+	<resultMap id="BaseResultMap" type="com.richinfo.manager.user.model.User">
 		<result column="ID" property="id" jdbcType="VARCHAR" />
-		<result column="OWNER" property="owner" jdbcType="VARCHAR" />
-		<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
-		<result column="PROVINCE_CODE" property="provinceCode" jdbcType="VARCHAR" />
-		<result column="CITY_CODE" property="cityCode" jdbcType="VARCHAR" />
 		<result column="CODE" property="code" jdbcType="VARCHAR" />
 		<result column="NAME" property="name" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="getLoginUser" parameterType="map" resultMap="BaseResultMap">
-		SELECT station.ID,station.CODE,station.OWNER,station.NAME ,station.AGENT_ID ,station.PROVINCE_CODE,station.CITY_CODE
-		FROM T_SDF_STATIONS station
-		where station.CODE = #{code} and station.PASSWORD = #{password} 
-		AND IS_DELETED = 1
+		SELECT 
+			id,code,name 
+		FROM 
+			T_YWPT_USER
+		WHERE 
+			code = #{code}
+		AND	
+			password = #{password}
 	</select>
 </mapper>
