@@ -1,0 +1,7 @@
+[
+    {"name":"用户管理", "children":[
+        {"id":"base-button", "name":"用户管理", "target":"navtab", "url":"html/form/button.html"},
+        {"id":"base-input", "name":"权限管理", "target":"navtab", "url":"html/form/input.html"},
+        {"id":"base-select", "name":"角色管理", "target":"navtab", "url":"html/form/select.html"}
+    ]}
+]
