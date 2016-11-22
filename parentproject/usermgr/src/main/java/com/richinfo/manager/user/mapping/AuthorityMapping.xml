@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.richinfo.manager.user.mapping.AuthorityMapping">
+<mapper namespace="com.richinfo.manager.user.dao.AuthorityMapper">
 
-	<resultMap type="BaseModel" id="baseModelMap">
+	<resultMap type="com.richinfo.manager.common.util.BaseModel" id="baseModelMap">
 		<result property="creater" column="creater" />  
         <result property="createTime" column="create_time" />  
         <result property="updater" column="updater" />
@@ -17,8 +17,7 @@
         <result property="parentAuthId" column="parant_auth_id" /> 
         <result property="menuUrl" column="menu_url" /> 
         <result property="authImg" column="auth_img" /> 
-        <collection property="roleList" ofType="com.richinfo.manager.user.model.Role" column="id">
-        </collection>
+        
     </resultMap>
     <!-- 根据权限id获取权限实体 -->
     <select id="getAuthById" parameterType="java.lang.String" resultMap="authMap">

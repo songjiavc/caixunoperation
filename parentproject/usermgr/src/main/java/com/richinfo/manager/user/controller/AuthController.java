@@ -20,7 +20,7 @@ import com.richinfo.manager.user.service.AuthorityService;
   */
 @Controller
 @RequestMapping("/authority")
-public class AuthController {
+public class AuthController extends BaseController{
 	
 	@Autowired
 	private AuthorityService authorityService;
@@ -38,11 +38,37 @@ public class AuthController {
  		return "user/authority";
 	}
 	
+	/** 
+	  * @Description: 获取权限下级列表 
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月21日 下午3:44:57 
+	  * 
+	  * @param request
+	  * @param model
+	  * @param httpSession
+	  * @return 
+	  */
 	@RequestMapping(value = "/getChildrenAuthorityList.action")
 	public @ResponseBody List<Authority> getChildrenAuthorityList(HttpServletRequest request,ModelMap model,HttpSession httpSession) {
  		///authority/initAuthority.action
  		String authParentId = request.getParameter("authParentId");
 		List<Authority> authList = authorityService.getChildrenAuthorityList(authParentId);
 		return authList;
+	}
+	
+	/** 
+	  * @Description: 保存或者更新url
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月21日 下午3:49:22 
+	  * @param request
+	  * @param model
+	  * @param httpSession
+	  * @return 
+	  */
+	@RequestMapping(value = "/saveOrUpdateAuthority.action")
+	public @ResponseBody String saveOrUpdateAuthority(HttpServletRequest request,ModelMap model,HttpSession httpSession){
+		Authority authority = new Authority();
+		String authId = authorityService.insertOrUpdateAuthority(authority);
+		return this.sendSuccessMsg(authId);
 	}
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.richinfo.manager.user.mapping.UserMapping">
+<mapper namespace="com.richinfo.manager.user.dao.UserMapping">
 	
-	<resultMap type="BaseModel" id="baseModelMap">
+	<resultMap type="com.richinfo.manager.common.util.BaseModel" id="baseModelMap">
 		<result property="creater" column="creater" />  
         <result property="createTime" column="create_time" />  
         <result property="updater" column="updater" />
@@ -10,17 +10,12 @@
         <result property="status" column="status" />  
 	</resultMap>
 	
-	<resultMap type="User" id="userMap" extends="baseModelMap">
+	<resultMap type="com.richinfo.manager.user.model.User" id="userMap" extends="baseModelMap">
         <id property="id" column="id" />
         <result property="code" column="code"/>
         <result property="name" column="name" />  
         <result property="password" column="password" />  
         <result property="createTime" column="createtime" />
-        <association property="role" javaType="com.richinfo.manager.user.model.Role" select="getRoleById">
-        	<id property="id" column="id"/>
-	        <result property="code" column="code"/>
-	        <result property="name" column="name"/>
-        </association>
     </resultMap>
     
     <select id="getUserById" parameterType="java.lang.String" resultMap="userMap">

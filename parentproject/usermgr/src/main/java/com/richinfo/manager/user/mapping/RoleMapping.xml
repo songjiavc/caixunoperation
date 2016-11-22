@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.richinfo.manager.user.mapping.RoleMapping">
+<mapper namespace="com.richinfo.manager.user.dao.RoleMapping">
 	<!--  
 	      ID          VARCHAR2(45) not null,
   		  CODE        VARCHAR2(45) not null,
@@ -12,7 +12,7 @@
           CREATE_TIME TIMESTAMP(6) 
     -->
 	
-	<resultMap type="BaseModel" id="baseModelMap">
+	<resultMap type="com.richinfo.manager.common.util.BaseModel" id="baseModelMap">
 		<result property="creater" column="creater" />  
         <result property="createTime" column="create_time" />  
         <result property="updater" column="updater" />
@@ -20,7 +20,7 @@
         <result property="status" column="status" />  
 	</resultMap>
 	
-	<resultMap type="Role" id="roleMap" extends="baseModelMap">
+	<resultMap type="com.richinfo.manager.user.model.Role" id="roleMap" extends="baseModelMap">
         <id property="id" column="id" />
         <result property="code" column="code"/>
         <result property="name" column="name" />  
