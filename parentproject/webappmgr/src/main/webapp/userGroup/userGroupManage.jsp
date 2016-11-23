@@ -5,7 +5,6 @@
     <title>通行证组管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
-    <jsp:include page="../common/top.jsp" flush="true" /> 
     <script src="<%=request.getContextPath() %>/userGroup/js/userGroupManage.js" type="text/javascript"></script>
     
     <script type="text/javascript">

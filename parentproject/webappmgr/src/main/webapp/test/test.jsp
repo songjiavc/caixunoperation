@@ -5,7 +5,6 @@
     <title>应用管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
-    <jsp:include page="../common/top.jsp" flush="true" /> 
     <script src="<%=request.getContextPath() %>/test/js/test.js" type="text/javascript"></script>
     
     <script type="text/javascript">

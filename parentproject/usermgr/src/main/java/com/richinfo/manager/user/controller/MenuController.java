@@ -193,7 +193,7 @@ public class MenuController extends GlobalExceptionHandler{
 	/**
 	 * 
 	* @Description: TODO(获取下级菜单) 
-	* @author bann@sdfcp.com
+	* @author songjia@richinfo.cn
 	* @date 2015年10月29日 下午2:09:16
 	 */
 	private List<MenuBean> getChildMenu(String parentAuthId,Set<Authority> authorities,List<MenuBean> menus)
@@ -230,7 +230,7 @@ public class MenuController extends GlobalExceptionHandler{
 	/**
 	 * 
 	* @Description: TODO(保存或者修改权限) 
-	* @author bann@sdfcp.com
+	* @author songjia@richinfo.cn
 	* @date 2015年10月9日 下午2:38:35
 	 */
 	@RequestMapping(value = "/saveOrUpdate", method = RequestMethod.GET)
@@ -268,7 +268,7 @@ public class MenuController extends GlobalExceptionHandler{
 	/**
 	 * 
 	* @Description: TODO(根据code获取权限的详细信息（根据唯一条件获取数据）) 
-	* @author bann@sdfcp.com
+	* @author songjia@richinfo.cn
 	* @date 2015年10月10日 上午10:16:35
 	 */
 	@RequestMapping(value = "/getDetailAuth", method = RequestMethod.GET)
@@ -281,6 +281,31 @@ public class MenuController extends GlobalExceptionHandler{
 		authority = authorityService.getAuthorityById(authId);
 		
 		return authority;
+	}
+	
+	/**
+	 * 
+	* @Description: TODO(查询权限数据带分页) 
+	* @author songjia@richinfo.cn
+	* @date 2015年10月14日 上午8:58:45
+	 */
+	@RequestMapping(value = "/getAuthList", method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getAuthList(
+			@RequestParam(value="page",required=false) int page,
+			@RequestParam(value="rows",required=false) int rows,
+			@RequestParam(value="status",required=false) String status,
+			@RequestParam(value="parentCode",required=false) String parentCode,
+			ModelMap model,HttpSession httpSession) throws Exception
+	{
+		Map<String,Object> returnData = new HashMap<String,Object> ();
+		
+		
+		//参数
+		StringBuffer buffer = new StringBuffer();
+		List<Object> params = new ArrayList<Object>();
+//		getChildrenAuthorityList
+		
+		return returnData;
 	}
 	
 }

@@ -43,4 +43,14 @@ public interface AuthorityService {
 	  */
 	public String insertOrUpdateAuthority(Authority authority);
 	
+	
+	/** 
+	  * @Description: 根据父节点id获取所有子节点权限信息
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月23日 下午3:34:52 
+	  * 
+	  * @param parentAuthId
+	  * @return 
+	  */
+	public List<Authority> getAuthorityListByParentId(String parentAuthId);
 }

@@ -4,12 +4,23 @@
 <head>
     <title>权限管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <%--全局引入的css文件 --%>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/material/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/icon.css"/>    
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/default.css"/>
+    <link href="<%=request.getContextPath() %>/common/ztree/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
+   
+    
+    <%--全局引入的js文件 --%>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/jquery.easyui.min.js"></script>    
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="<%=request.getContextPath() %>/common/ztree/js/jquery.ztree.core-3.5.js" type="text/javascript"></script>
     
     <script src="<%=request.getContextPath() %>/user/js/authority.js" type="text/javascript"></script>
     
     <script type="text/javascript">
-  	 
-  	  
+	var contextPath = '<%=request.getContextPath() %>';
   	var toolbar = [{
   	    text:'添加',
   	    iconCls:'icon-add',
@@ -53,7 +64,7 @@
 </head>
 <body class="easyui-layout">
 	<div class="zTreeDemoBackground left" style="float:left;width: 15%;" data-options="region:'west'">
-		<ul id="treeDemo" class="ztree"></ul>
+		<ul id="authorityTree" class="ztree"></ul>
 	</div>
     <div style="float:left;width: 85%;" data-options="region:'east'">
     	 <table id="datagrid"  title="权限列表" 

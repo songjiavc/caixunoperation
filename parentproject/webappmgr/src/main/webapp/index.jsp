@@ -5,18 +5,18 @@
   <head>
     <title>运维管理平台</title>
 	<%--全局引入的css文件 --%>
-	<link rel="stylesheet" type="text/css" href="common/easyui/themes/material/easyui.css"/>
-    <link rel="stylesheet" type="text/css" href="common/easyui/themes/icon.css"/>    
-    <link rel="stylesheet" type="text/css" href="css/default.css"/>
-    <link href="common/ztree/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/material/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/icon.css"/>    
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/default.css"/>
+    <link href="<%=request.getContextPath() %>/common/ztree/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
    
     
     <%--全局引入的js文件 --%>
-    <script type="text/javascript" src="common/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="user/js/index.js"></script>
-    <script type="text/javascript" src="common/easyui/jquery.easyui.min.js"></script>    
-    <script type="text/javascript" src="common/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="common/ztree/js/jquery.ztree.core-3.5.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/user/js/index.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/jquery.easyui.min.js"></script>    
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="<%=request.getContextPath() %>/common/ztree/js/jquery.ztree.core-3.5.js" type="text/javascript"></script>
 	  <script type="text/javascript">
 	  	var contextPath = '<%=request.getContextPath() %>';
 	  //从一个页面获取另一个页面的url

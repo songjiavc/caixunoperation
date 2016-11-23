@@ -5,7 +5,7 @@ package com.richinfo.manager.common.bean;
  * 
   * @ClassName: TreeBean 
   * @Description: TODO(前台树展示bean类) 
-  * @author bann@sdfcp.com
+  * @author songjia@richinfo.cn
   * @date 2015年10月14日 下午2:56:23 
   *
  */

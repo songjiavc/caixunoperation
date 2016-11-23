@@ -222,7 +222,7 @@ function addTab(subtitle, url, icon) {
  
 //创建tab内部的iframe
 function createFrame(url) {
-	var s = '<iframe scrolling="auto" frameborder="no" border="0" src="' + url + '" style="width:100%;height:99.6%;padding:0;margin:0;"></iframe>';
+	var s = '<iframe scrolling="auto" frameborder="no" border="0" src="' + url + '" style="width:100%;height:99.4%;padding:0;margin:0;"></iframe>';
 	return s;
 }
 

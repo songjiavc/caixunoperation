@@ -7,7 +7,7 @@ import java.util.List;
  * 
   * @ClassName: resultBean 
   * @Description: TODO(返回数据bean) 
-  * @author bann@sdfcp.com
+  * @author songjia@richinfo.cn
   * @date 2015年10月9日 下午4:46:57 
   *
  */

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * 
   * @ClassName: GlobalExceptionHandler 
   * @Description: 系统全局异常处理类 
-  * @author bann@sdfcp.com
+  * @author songjia@richinfo.cn
   * @date 2015年12月3日 下午4:59:45 
   *
  */

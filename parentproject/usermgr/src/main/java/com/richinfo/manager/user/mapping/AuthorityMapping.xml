@@ -29,13 +29,13 @@
     		ID = #{id}
     </select>
     <!-- 根据父节点id获取权限列表 -->
-    <select id="getAuthListByParentId" parameterType = "Map" resultMap="authMap">
+    <select id="getAuthListByParentId" parameterType = "String" resultMap="authMap">
     	SELECT 
     		*
     	FROM 
     		T_YWPT_AUTHORITY
     	WHERE
-    	 	parant_auth_id = #{parantAuthId}
+    	 	parant_auth_id = #{authParentId}
     </select>
     <!-- 插入权限 -->
     <insert id="insertAuthority" parameterType="com.richinfo.manager.user.model.Authority">

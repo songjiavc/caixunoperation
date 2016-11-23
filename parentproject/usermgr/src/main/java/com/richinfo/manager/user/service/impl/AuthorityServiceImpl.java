@@ -27,9 +27,8 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	public List<Authority> getChildrenAuthorityList(String authParentId) {
-		Map<String,String> paramMap = new HashMap<String,String>();
-		paramMap.put("authParentId", authParentId);
-		List<Authority> authList = authorityMapper.getAuthListByParentId(paramMap);
+		
+		List<Authority> authList = authorityMapper.getAuthListByParentId(authParentId);
 		return authList;
 	}
 
@@ -58,6 +57,13 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public Authority getAuthorityById(String authId) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Authority> getAuthorityListByParentId(String parentAuthId) {
+		
+		
 		return null;
 	}
 	

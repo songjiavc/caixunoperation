@@ -10,6 +10,12 @@
   <artifactId>usermgr</artifactId>
   <name>usermgr</name>
   <url>http://maven.apache.org</url>
+  <developers>
+       <developer>
+           <name>songjia</name>
+           <email>songjia@richinfo.cn</email>
+       </developer>
+   </developers>
   <build>
 		<plugins>
 			<plugin>
@@ -124,6 +130,16 @@
 	    <groupId>org.mybatis</groupId>
 	    <artifactId>mybatis</artifactId>
 	    <version>3.4.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>javax.persistence</groupId>
+	  <artifactId>persistence-api</artifactId>
+	  <version>1.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.github.pagehelper</groupId>
+	    <artifactId>pagehelper</artifactId>
+	    <version>4.1.6</version>
 	</dependency>
 	<!-- mybatis end  -->
 		<!-- 数据库依赖 -->

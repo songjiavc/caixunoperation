@@ -10,7 +10,7 @@ import com.richinfo.manager.user.model.Authority;
 public interface AuthorityMapper {
 	
 	@Autowired
-	List<Authority> getAuthListByParentId(Map<String,String> paramMap);
+	List<Authority> getAuthListByParentId(String authParentId);
 	
 	@Autowired
 	void deleteAuthorityById(Map<String,String> paramMap);
@@ -20,4 +20,5 @@ public interface AuthorityMapper {
 	
 	@Autowired
 	void updateAuthority(Authority authority);
+	
 }

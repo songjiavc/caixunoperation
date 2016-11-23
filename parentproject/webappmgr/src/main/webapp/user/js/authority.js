@@ -4,7 +4,7 @@ $(document).ready(
 		{
 			initDatagrid('');
 			closeDialog();
-			initZnodes();
+//			initZnodes();
 		}
 );
 
@@ -193,7 +193,7 @@ function deleteAuthList()
 				                success: function (data) {
 				                	initDatagrid('');
 				                	//批量删除权限后重新加载树
-				                	initZnodes();
+//				                	initZnodes();
 				                	
 				                	$.messager.alert('提示', data.message);
 				                	
@@ -266,7 +266,7 @@ function deleteAuth(code,isSystem,connectRole)
 			                success: function (data) {
 			                	initDatagrid('');
 			                	//删除权限后重新加载树
-			                	initZnodes();
+//			                	initZnodes();
 			                	$.messager.alert('提示', data.message);
 			                },
 			                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -340,7 +340,7 @@ function submitAddauth()
 	    	//在添加权限后刷新权限数据列表
 	    	initDatagrid('');
 	    	//在添加权限后刷新权限树
-	    	initZnodes();
+//	    	initZnodes();
 	    	$('#ff').form('clear');
 	    	$("#parentAuth").combobox('select','0');
 	    	$('#ff [name="status"]:radio').each(function() {   //设置“是”为默认选中radio
@@ -367,7 +367,7 @@ function submitUpdateauth()
 	    	//在修改权限后刷新权限数据列表
 	    	initDatagrid('');
 	    	//在修改权限后刷新权限树
-	    	initZnodes();
+//	    	initZnodes();
 	    	$('#ffupdate').form('clear');
 	    }
 	});
@@ -517,7 +517,7 @@ function initZnodes()
         }
    });
 	
-	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	$.fn.zTree.init($("#authorityTree"), setting, zNodes);
 }
 
 /**

@@ -6,7 +6,6 @@
     
     <title>测试页面</title>
 	  
-	<jsp:include page="../common/top.jsp" flush="true" /> 
     <script type="text/javascript" src="<%=request.getContextPath() %>/user/js/test.js"></script>  
 </head>
 <body>

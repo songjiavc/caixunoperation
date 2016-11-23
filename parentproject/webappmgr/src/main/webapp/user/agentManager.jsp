@@ -6,7 +6,6 @@
     
     <title>代理管理</title>
 	  
-	<jsp:include page="../common/top.jsp" flush="true" /> 
     <script type="text/javascript" src="<%=request.getContextPath() %>/user/js/agentManager.js"></script>  
     <script type="text/javascript">
 	   	//后台传入前台初始化参数
