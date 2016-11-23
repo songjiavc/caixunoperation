@@ -6,11 +6,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>B-JUI 系统登录</title>
+<title>运维平台</title>
 <meta name="renderer" content="webkit">
-<script src="common/B-JUI/js/jquery-1.11.3.min.js"></script>
-<script src="common/B-JUI/js/jquery.cookie.js"></script>
-<link href="common/B-JUI/themes/css/bootstrap.min.css" rel="stylesheet">
+<script src="common/jquery-1.11.3.min.js"></script>
+<script src="common/jquery.cookie.js"></script>
+<link href="common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
 html, body { height: 100%; overflow: hidden; }
 body {
@@ -122,6 +122,19 @@ function choose_bg() {
                     <span class="input-group-addon" id="sizing-addon-password"><span class="glyphicon glyphicon-lock"></span></span>
                     <input type="password" class="form-control" id="j_password" name="passwordhash" placeholder="登录密码" aria-describedby="sizing-addon-password">
                 </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+				  <div class="col-xs-8">
+				   	<div class="input-group">
+	                    <span class="input-group-addon" id="sizing-addon-code"><span class="glyphicon glyphicon-envelope"></span></span>
+	                    <input type="text" class="form-control"  id="j_messageCode" name="messageCode" placeholder="手机验证码" width="100px" aria-describedby="sizing-addon-password">
+                	</div>
+				  </div>
+				  <div class="col-xs-3">
+				    <button type="button" class="btn btn-default">获取验证码</button>
+				  </div>
+				</div>
             </div>
             <!--  验证码功能取消，暂时不需要验证码登录
             <div class="form-group">

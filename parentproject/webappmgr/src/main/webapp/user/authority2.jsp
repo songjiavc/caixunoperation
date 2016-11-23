@@ -4,9 +4,6 @@
 <head>
     <title>权限管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
-    <jsp:include page="../common/top.jsp" flush="true" /> 
-    <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.core-3.5.js" type="text/javascript"></script>
     
     <script src="<%=request.getContextPath() %>/user/js/authority.js" type="text/javascript"></script>
     

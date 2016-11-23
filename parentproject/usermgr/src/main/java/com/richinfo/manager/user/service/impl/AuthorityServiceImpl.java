@@ -54,6 +54,12 @@ public class AuthorityServiceImpl implements AuthorityService {
 		}
 		return id;
 	}
+
+	@Override
+	public Authority getAuthorityById(String authId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

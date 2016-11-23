@@ -25,6 +25,15 @@ public interface AuthorityService {
 	public void deleteAuthorityById(String authId);
 	
 	/** 
+	  * @Description: 根据权限id获取权限实体
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月23日 上午10:54:17 
+	  * @param authId
+	  * @return 
+	  */
+	public Authority getAuthorityById(String authId);
+	
+	/** 
 	  * @Description: 添加或者删除
 	  * @author songjia@richinfo.cn
 	  * @date 2016年11月21日 下午1:25:26 

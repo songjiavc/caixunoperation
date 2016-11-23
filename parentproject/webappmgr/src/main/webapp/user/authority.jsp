@@ -5,22 +5,47 @@
    	<script type="text/javascript">
    		//设置parentAuthid值
    		var authParentId = $('#authParentId').val();
-   		
    		$('#auth-table').datagrid({
-	   	    dataUrl: 'authority/getChildrenAuthorityList.action',
+	   	    local : 'remote',
+   			dataUrl : 'authority/getChildrenAuthorityList.action',
+   			editUrl : 'authority/saveOrUpdateAuthority.action',        //编辑url
+   			editCallback : saveCallBack,  //保存返回回掉函数
 	   	 	showToolbar : true,
-	   	 	toolbarItem : [add,edit,del],
-	   	    data : {
+	   	 	columnShowhide : false,
+	   	 	columnMenu : false,
+	   	 	columnResize : false,
+	   	 	filterThead : false,
+	   	 	toolbarItem : 'add,del,edit',
+	   	 	editMode : 'dialog',
+	   	 	editDialogOp : {
+	   	 		width:500, 
+	   	 		height:300, 
+	   	 		mask:false
+	   	 	},
+	   	 	paging : {
+	   	 		pageSize:30, 
+	   	 		selectPageSize:'10,20,30',
+	   	 		pageCurrent:1, 
+	   	 		showPagenum:5, 
+	   	 		total:0
+	   	 	},
+	   	 	pagingAlign : 'right',
+ 	   	    data : {
 	   	    	authParentId : authParentId
 	   	    },
 	   	    columns: [
-	   	    	{name:'id',label:'id',align:'center',width:70},
-	   	    	{name:'code',label:'编号',align:'center',width:70},
-	   	    	{name:'authName',label:'权限名称',align:'center',width:70},
-	   	    	{name:'parentAuthId',label:'上级id',align:'center',width:70},
-	   	    	{name:'menuUrl',label:'链接地址',align:'center',width:70}
+	   	    	{name:'id',hide:true,add:false,edit:false},
+	   	    	{name:'code',label:'编号',align:'center',width:150},
+	   	    	{name:'authName',label:'权限名称',align:'center',width:150},
+	   	    	{name:'parentAuthId',add:false,edit:false,hide:true,align:'center',width:150},
+	   	    	{name:'menuUrl',label:'链接地址',align:'center',width:150}
 	   	    ]
 	   	});
+   		
+   		
+   		function saveCallBack(json){
+   			alert(json);
+   		} 
    	</script>
 	</head>
 	<body>
@@ -31,7 +56,7 @@
       				<div id="auth-ztree" class="ztree"></div>
    			 	</div>
 			    <div class="col-md-10">
-			    	<table id="auth-table" class="table table-bordered" fieldSortable="false" filterThead="false" data-toggle="datagrid" >
+			    	<table id="auth-table" class="table table-bordered" data-toggle="datagrid" >
 					</table>
 			    </div>
   			</div>

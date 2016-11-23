@@ -24,10 +24,7 @@
         <id property="id" column="id" />
         <result property="code" column="code"/>
         <result property="name" column="name" />  
-        <collection property="userList" ofType="com.richinfo.manager.user.model.User" column="id" select="getUserById">
-        </collection>
-        <collection property="authList" ofType="com.richinfo.manager.user.model.Authority" column="id" select="getAuthById">
-        </collection>
+        
         
     </resultMap>
     
@@ -38,16 +35,6 @@
         	ID = #{id}
     </select>
     
-    <select id="getAuthById" parameterType="java.lang.String" resultMap="com.richinfo.manager.user.model.Authority">
-        
-        SELECT 
-        	ID,CODE,AUTH_NAME,PARANT_AUTH_ID,MENU_URL,AUTH_IMG,STATUS,CREATER,CREATE_TIME,UPDATER,UPDATE_TIME
-        FROM 
-        	T_YWPT_AUTHORITY
-        WHERE 
-        	ID = #{id}
-    
-    </select>
     
     <select id="getRoleById" parameterType="java.lang.String" resultMap="roleMap">
     	SELECT

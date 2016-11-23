@@ -45,8 +45,8 @@ public class LoginServlet extends HttpServlet {
 		boolean loginResult = bs.userLogin(request);
 		if (loginResult) {
 			//返回到动态加载页面
+			request.setAttribute("message", "success");
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
-
 		} else {
 			request.getRequestDispatcher("/login.jsp").forward(request,response);
 		}

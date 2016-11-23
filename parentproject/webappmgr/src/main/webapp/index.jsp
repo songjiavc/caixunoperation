@@ -1,262 +1,308 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="zh">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>B-JUI 前端管理框架</title>
-<meta name="Keywords" content="B-JUI,Bootstrap,jquery,ui,前端,框架,开源,OSC,开源框架,knaan"/>
-<meta name="Description" content="B-JUI(Best jQuery UI)前端管理框架。轻松开发，专注您的业务，从B-JUI开始！"/> 
-<!-- bootstrap - css -->
-<link href="common/B-JUI/themes/css/bootstrap.css" rel="stylesheet">
-<!-- core - css -->
-<link href="common/B-JUI/themes/css/style.css" rel="stylesheet">
-<link href="common/B-JUI/themes/blue/core.css" id="bjui-link-theme" rel="stylesheet">
-<link href="common/B-JUI/themes/css/fontsize.css" id="bjui-link-theme" rel="stylesheet">
-<!-- plug - css -->
-<link href="common/B-JUI/plugins/kindeditor_4.1.11/themes/default/default.css" rel="stylesheet">
-<link href="common/B-JUI/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-<link href="common/B-JUI/plugins/nice-validator-1.0.7/jquery.validator.css" rel="stylesheet">
-<link href="common/B-JUI/plugins/bootstrapSelect/bootstrap-select.css" rel="stylesheet">
-<link href="common/B-JUI/plugins/webuploader/webuploader.css" rel="stylesheet">
-<link href="common/B-JUI/themes/css/FA/css/font-awesome.min.css" rel="stylesheet">
-<!-- Favicons -->
-<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">
-<link rel="shortcut icon" href="assets/ico/favicon.png">
-<!--[if lte IE 7]>
-<link href="common/B-JUI/themes/css/ie7.css" rel="stylesheet">
-<![endif]-->
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lte IE 9]>
-    <script src="common/B-JUI/other/html5shiv.min.js"></script>
-    <script src="common/B-JUI/other/respond.min.js"></script>
-<![endif]-->
-<!-- jquery -->
-<script src="common/B-JUI/js/jquery-1.11.3.min.js"></script>
-<script src="common/B-JUI/js/jquery.cookie.js"></script>
-<!--[if lte IE 9]>
-<script src="common/B-JUI/other/jquery.iframe-transport.js"></script>
-<![endif]-->
-<!-- B-JUI -->
-<script src="common/B-JUI/js/bjui-all.min.js"></script>
-<!-- plugins -->
-<!-- swfupload for kindeditor -->
-<script src="common/B-JUI/plugins/swfupload/swfupload.js"></script>
-<!-- Webuploader -->
-<script src="common/B-JUI/plugins/webuploader/webuploader.js"></script>
-<!-- kindeditor -->
-<script src="common/B-JUI/plugins/kindeditor_4.1.11/kindeditor-all-min.js"></script>
-<script src="common/B-JUI/plugins/kindeditor_4.1.11/lang/zh-CN.js"></script>
-<!-- colorpicker -->
-<script src="common/B-JUI/plugins/colorpicker/js/bootstrap-colorpicker.min.js"></script>
-<!-- ztree -->
-<script src="common/B-JUI/plugins/ztree/jquery.ztree.all-3.5.js"></script>
-<!-- nice validate -->
-<script src="common/B-JUI/plugins/nice-validator-1.0.7/jquery.validator.js"></script>
-<script src="common/B-JUI/plugins/nice-validator-1.0.7/jquery.validator.themes.js"></script>
-<!-- bootstrap plugins -->
-<script src="common/B-JUI/plugins/bootstrap.min.js"></script>
-<script src="common/B-JUI/plugins/bootstrapSelect/bootstrap-select.min.js"></script>
-<script src="common/B-JUI/plugins/bootstrapSelect/defaults-zh_CN.min.js"></script>
-<!-- icheck -->
-<script src="common/B-JUI/plugins/icheck/icheck.min.js"></script>
-<!-- HighCharts -->
-<script src="common/B-JUI/plugins/highcharts/highcharts.js"></script>
-<script src="common/B-JUI/plugins/highcharts/highcharts-3d.js"></script>
-<script src="common/B-JUI/plugins/highcharts/themes/gray.js"></script>
-<!-- other plugins -->
-<script src="common/B-JUI/plugins/other/jquery.autosize.js"></script>
-<link href="common/B-JUI/plugins/uploadify/css/uploadify.css" rel="stylesheet">
-<script src="common/B-JUI/plugins/uploadify/scripts/jquery.uploadify.min.js"></script>
-<script src="common/B-JUI/plugins/download/jquery.fileDownload.js"></script>
-<!-- init -->
-<script type="text/javascript">
-$(function() {
-    BJUI.init({
-        JSPATH       : 'common/B-JUI/',         //[可选]框架路径
-        PLUGINPATH   : 'common/B-JUI/plugins/', //[可选]插件路径
-        loginInfo    : {url:'login_timeout.html', title:'登录', width:440, height:240}, // 会话超时后弹出登录对话框
-        statusCode   : {ok:200, error:300, timeout:301}, //[可选]
-        ajaxTimeout  : 300000, //[可选]全局Ajax请求超时时间(毫秒)
-        alertTimeout : 3000,  //[可选]信息提示[info/correct]自动关闭延时(毫秒)
-        pageInfo     : {total:'totalRow', pageCurrent:'pageCurrent', pageSize:'pageSize', orderField:'orderField', orderDirection:'orderDirection'}, //[可选]分页参数
-        keys         : {statusCode:'statusCode', message:'message'}, //[可选]
-        ui           : {
-                         sidenavWidth     : 220,
-                         showSlidebar     : true, //[可选]左侧导航栏锁定/隐藏
-                         overwriteHomeTab : false //[可选]当打开一个未定义id的navtab时，是否可以覆盖主navtab(我的主页)
-                       },
-        debug        : true,    // [可选]调试模式 [true|false，默认false]
-        theme        : 'green' // 若有Cookie['bjui_theme'],优先选择Cookie['bjui_theme']。皮肤[五种皮肤:default, orange, purple, blue, red, green]
-    })
-    //时钟
-    var today = new Date(), time = today.getTime()
-    $('#bjui-date').html(today.formatDate('yyyy/MM/dd'))
-    setInterval(function() {
-        today = new Date(today.setSeconds(today.getSeconds() + 1))
-        $('#bjui-clock').html(today.formatDate('HH:mm:ss'))
-    }, 1000)
-})
-
-/*window.onbeforeunload = function(){
-    return "确定要关闭本系统 ?";
-}*/
-
-//菜单-事件-zTree
-function MainMenuClick(event, treeId, treeNode) {
-    if (treeNode.target && treeNode.target == 'dialog' || treeNode.target == 'navtab')
-        event.preventDefault()
+<html>
+  <head>
+    <title>运维管理平台</title>
+	<%--全局引入的css文件 --%>
+	<link rel="stylesheet" type="text/css" href="common/easyui/themes/material/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="common/easyui/themes/icon.css"/>    
+    <link rel="stylesheet" type="text/css" href="css/default.css"/>
+    <link href="common/ztree/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
+   
     
-    if (treeNode.isParent) {
-        var zTree = $.fn.zTree.getZTreeObj(treeId)
-        
-        zTree.expandNode(treeNode)
-        return
-    }
-    
-    if (treeNode.target && treeNode.target == 'dialog')
-        $(event.target).dialog({id:treeNode.targetid, url:treeNode.url, title:treeNode.name})
-    else if (treeNode.target && treeNode.target == 'navtab')
-        $(event.target).navtab({id:treeNode.targetid, url:treeNode.url, title:treeNode.name, fresh:treeNode.fresh, external:treeNode.external})
-}
+    <%--全局引入的js文件 --%>
+    <script type="text/javascript" src="common/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="user/js/index.js"></script>
+    <script type="text/javascript" src="common/easyui/jquery.easyui.min.js"></script>    
+    <script type="text/javascript" src="common/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="common/ztree/js/jquery.ztree.core-3.5.js" type="text/javascript"></script>
+	  <script type="text/javascript">
+	  	var contextPath = '<%=request.getContextPath() %>';
+	  //从一个页面获取另一个页面的url
+	    function getQueryString(name) {
+	    	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	    	var r = window.location.search.substr(1).match(reg);
+	    	if (r != null) 
+	    		return unescape(r[2]); 
+	    	return null;
+	    }
+		
+		$.extend($.fn.validatebox.defaults.rules, {
+	        CHS: {
+	          validator: function (value, param) {
+	            return /^[\u0391-\uFFE5]+$/.test(value);
+	          },
+	          message: '请输入汉字'
+	        },
+	        english : {// 验证英语
+	              validator : function(value) {
+	                  return /^[A-Za-z]+$/i.test(value);
+	              },
+	              message : '请输入英文'
+	          },
+	          ip : {// 验证IP地址
+	              validator : function(value) {
+	                  return /\d+\.\d+\.\d+\.\d+/.test(value);
+	              },
+	              message : 'IP地址格式不正确'
+	          },
+	        ZIP: {
+	          validator: function (value, param) {
+	            return /^[0-9]\d{5}$/.test(value);
+	          },
+	          message: '邮政编码不存在'
+	        },
+	        QQ: {
+	          validator: function (value, param) {
+	            return /^[1-9]\d{4,10}$/.test(value);
+	          },
+	          message: 'QQ号码不正确'
+	        },
+	        mobile: {
+	          validator: function (value, param) {
+	            return /^(?:13\d|15\d|18\d)-?\d{5}(\d{3}|\*{3})$/.test(value);
+	          },
+	          message: '手机号码不正确'
+	        },
+	        tel:{
+	          validator:function(value,param){
+	            return /^(\d{3}-|\d{4}-)?(\d{8}|\d{7})?(-\d{1,6})?$/.test(value);
+	          },
+	          message:'电话号码不正确'
+	        },
+	        mobileAndTel: {
+	          validator: function (value, param) {
+	            return /(^([0\+]\d{2,3})\d{3,4}\-\d{3,8}$)|(^([0\+]\d{2,3})\d{3,4}\d{3,8}$)|(^([0\+]\d{2,3}){0,1}13\d{9}$)|(^\d{3,4}\d{3,8}$)|(^\d{3,4}\-\d{3,8}$)/.test(value);
+	          },
+	          message: '请正确输入电话号码'
+	        },
+	        number: {
+	          validator: function (value, param) {
+	            return /^[0-9]+.?[0-9]*$/.test(value);
+	          },
+	          message: '请输入数字'
+	        },
+	        money:{
+	          validator: function (value, param) {
+	           	return (/^(([1-9]\d*)|\d)(\.\d{1,2})?$/).test(value);
+	           },
+	           message:'请输入正确的金额'
 
-// 满屏开关
-var bjui_index_container = 'container_fluid'
+	        },
+	        mone:{
+	          validator: function (value, param) {
+	           	return (/^(([1-9]\d*)|\d)(\.\d{1,2})?$/).test(value);
+	           },
+	           message:'请输入整数或小数'
 
-function bjui_index_exchange() {
-    bjui_index_container = bjui_index_container == 'container_fluid' ? 'container' : 'container_fluid'
-    
-    $('#bjui-top').find('> div').attr('class', bjui_index_container)
-    $('#bjui-navbar').find('> div').attr('class', bjui_index_container)
-    $('#bjui-body-box').find('> div').attr('class', bjui_index_container)
-}
-</script>
-<!-- highlight && ZeroClipboard -->
-<link href="assets/prettify.css" rel="stylesheet">
-<script src="assets/prettify.js"></script>
-<link href="assets/ZeroClipboard.css" rel="stylesheet">
-<script src="assets/ZeroClipboard.js"></script>
+	        },
+	        integer:{
+	          validator:function(value,param){
+	            return /^[+]?[1-9]\d*$/.test(value);
+	          },
+	          message: '请输入最小为1的整数'
+	        },
+	        integ:{
+	          validator:function(value,param){
+	            return /^[+]?[0-9]\d*$/.test(value);
+	          },
+	          message: '请输入整数'
+	        },
+	        range:{
+	          validator:function(value,param){
+	            if(/^[1-9]\d*$/.test(value)){
+	              return value >= param[0] && value <= param[1]
+	            }else{
+	              return false;
+	            }
+	          },
+	          message:'输入的数字在{0}到{1}之间'
+	        },
+	        minLength:{
+	          validator:function(value,param){
+	            return value.length >=param[0]
+	          },
+	          message:'至少输入{0}个字'
+	        },
+	        maxLength:{
+	          validator:function(value,param){
+	            return value.length<=param[0]
+	          },
+	          message:'最多{0}个字'
+	        },
+	        //select即选择框的验证
+	        selectValid:{
+	          validator:function(value,param){
+	            if(value == param[0]){
+	              return false;
+	            }else{
+	              return true ;
+	            }
+	          },
+	          message:'请选择'
+	        },
+	        idCode:{
+	          validator:function(value,param){
+	            return /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value);
+	          },
+	          message: '请输入正确的身份证号'
+	        },
+	        loginName: {
+	          validator: function (value, param) {
+	            return /^[\u0391-\uFFE5\w]+$/.test(value);
+	          },
+	          message: '登录名称只允许汉字、英文字母、数字及下划线。'
+	        },
+	        equalTo: {
+	          validator: function (value, param) {
+	            return value == $(param[0]).val();
+	          },
+	          message: '两次输入的字符不一至'
+	        },
+	        englishOrNum : {// 只能输入英文和数字
+	              validator : function(value) {
+	                  return /^[a-zA-Z0-9_ ]{1,}$/.test(value);
+	              },
+	              message : '请输入英文、数字、下划线或者空格'
+	          },
+	         xiaoshu:{ 
+	            validator : function(value){ 
+	            return /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/.test(value);
+	            }, 
+	            message : '最多保留两位小数！'    
+	        	},
+	        ddPrice:{
+	        validator:function(value,param){
+	          if(/^[1-9]\d*$/.test(value)){
+	            return value >= param[0] && value <= param[1];
+	          }else{
+	            return false;
+	          }
+	        },
+	        message:'请输入1到100之间正整数'
+	      },
+	      jretailUpperLimit:{
+	        validator:function(value,param){
+	          if(/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)){
+	            return parseFloat(value) > parseFloat(param[0]) && parseFloat(value) <= parseFloat(param[1]);
+	          }else{
+	            return false;
+	          }
+	        },
+	        message:'请输入0到100之间的最多俩位小数的数字'
+	      },
+	      rateCheck:{
+	        validator:function(value,param){
+	          if(/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)){
+	            return parseFloat(value) > parseFloat(param[0]) && parseFloat(value) <= parseFloat(param[1]);
+	          }else{
+	            return false;
+	          }
+	        },
+	        message:'请输入0到1000之间的最多俩位小数的数字'
+	      },
+	      md: { //校验有效结束时间要大于有效开始时间的方法
+				validator: function(value, param){ 
+				var startTime2 = $(param[0]).datetimebox('getValue'); 
+				var d1 = $.fn.datebox.defaults.parser(startTime2); 
+				var d2 = $.fn.datebox.defaults.parser(value); 
+				varify=d2>=d1; 
+				return varify; 
+			
+				}, 
+				message: '结束时间要大于等于开始时间！' 
+		  },
+		  equalTo: { 
+		    	validator: function (value, param) { 
+		    		return $(param[0]).val() == value;
+	    		}, message: '两次密码输入不一致！' }
+	      });
+	  
+	
+    </script>
+
+
+ 
 </head>
-<body>
-    <!--[if lte IE 7]>
-        <div id="errorie"><div>您还在使用老掉牙的IE，正常使用系统前请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
-    <![endif]-->
-    <div id="bjui-top" class="bjui-header">
-        <div class="container_fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapsenavbar" data-target="#bjui-top-collapse" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <nav class="collapse navbar-collapse" id="bjui-top-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="datetime"><a><span id="bjui-date">0000/00/00</span> <span id="bjui-clock">00:00:00</span></a></li>
-                    <li><a href="#">账号：BJUI</a></li>
-                    <li><a href="#">角色：管理员</a></li>
-                    <li><a href="changepassword.html" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
-                    <li><a href="login.html" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" title="更改字号"><i class="fa fa-font"></i> 大</a>
-                        <ul class="dropdown-menu" role="menu" id="bjui-fonts">
-                            <li><a href="javascript:;" class="bjui-font-a" data-toggle="fonts"><i class="fa fa-font"></i> 特大</a></li>
-                            <li><a href="javascript:;" class="bjui-font-b" data-toggle="fonts"><i class="fa fa-font"></i> 大</a></li>
-                            <li><a href="javascript:;" class="bjui-font-c" data-toggle="fonts"><i class="fa fa-font"></i> 中</a></li>
-                            <li><a href="javascript:;" class="bjui-font-d" data-toggle="fonts"><i class="fa fa-font"></i> 小</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown active"><a href="#" class="dropdown-toggle theme" data-toggle="dropdown" title="切换皮肤"><i class="fa fa-tree"></i></a>
-                        <ul class="dropdown-menu" role="menu" id="bjui-themes">
-                            <!--
-                            <li><a href="javascript:;" class="theme_default" data-toggle="theme" data-theme="default">&nbsp;<i class="fa fa-tree"></i> 黑白分明&nbsp;&nbsp;</a></li>
-                            <li><a href="javascript:;" class="theme_orange" data-toggle="theme" data-theme="orange">&nbsp;<i class="fa fa-tree"></i> 橘子红了</a></li>
-                            -->
-                            <li><a href="javascript:;" class="theme_purple" data-toggle="theme" data-theme="purple">&nbsp;<i class="fa fa-tree"></i> 紫罗兰</a></li>
-                            <li class="active"><a href="javascript:;" class="theme_blue" data-toggle="theme" data-theme="blue">&nbsp;<i class="fa fa-tree"></i> 天空蓝</a></li>
-                            <li><a href="javascript:;" class="theme_green" data-toggle="theme" data-theme="green">&nbsp;<i class="fa fa-tree"></i> 绿草如茵</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="javascript:;" onclick="bjui_index_exchange()" title="横向收缩/充满屏幕"><i class="fa fa-exchange"></i></a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-    <header class="navbar bjui-header" id="bjui-navbar">
-        <div class="container_fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" id="bjui-navbar-collapsebtn" data-toggle="collapsenavbar" data-target="#bjui-navbar-collapse" aria-expanded="false">
-                    <i class="fa fa-angle-double-right"></i>
-                </button>
-                <a class="navbar-brand" href="http://b-jui.com"><img src="../images/logo.png" height="30"></a>
-            </div>
-            <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
-                <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
-                    <li class="active">
-                        <a href="json/menu-form.json" data-toggle="sidenav" data-id-key="targetid">系统管理</a>
-                    </li>
-                   
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <div id="bjui-body-box">
-        <div class="container_fluid" id="bjui-body">
-            <div id="bjui-sidenav-col">
-                <div id="bjui-sidenav">
-                    <div id="bjui-sidenav-arrow" data-toggle="tooltip" data-placement="left" data-title="隐藏左侧菜单">
-                        <i class="fa fa-long-arrow-left"></i>
-                    </div>
-                    <div id="bjui-sidenav-box">
-                        
-                    </div>
-                </div>
-            </div>
-            <div id="bjui-navtab" class="tabsPage">
-                <div id="bjui-sidenav-btn" data-toggle="tooltip" data-title="显示左侧菜单" data-placement="right">
-                    <i class="fa fa-bars"></i>
-                </div>
-                <div class="tabsPageHeader">
-                    <div class="tabsPageHeaderContent">
-                        <ul class="navtab-tab nav nav-tabs">
-                            <li><a href="javascript:;"><span><i class="fa fa-home"></i> #maintab#</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="tabsLeft"><i class="fa fa-angle-double-left"></i></div>
-                    <div class="tabsRight"><i class="fa fa-angle-double-right"></i></div>
-                    <div class="tabsMore"><i class="fa fa-angle-double-down"></i></div>
-                </div>
-                <ul class="tabsMoreList">
-                    <li><a href="javascript:;">#maintab#</a></li>
-                </ul>
-                <div class="navtab-panel tabsPageContent">
-                    <div class="navtabPage unitBox">
-                        <div class="bjui-pageContent">
-                            <div class="highlight">
-                                <pre class="prettyprint">
-------------------------
-BJUI 更新至 V1.31
-------------------------
-[修复] datagrid参数templateWidth、dialogFilterW为0时默认为启用；修复排序bug；新增字段参数itemattr，为items参数指定key/value；新增方法filter，用于数据筛选。
-[修复] 分页组件。
-[更新] ajaxform、ajaxsearch新增参数validate，是否验证标记。
-[更新] 验证插件nice validate更新至1.0.7。
-[更新] 图标字体Font Awesome更新至4.7.0。
-[调整] CSS细微调整。
-------------------------
+<body class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+<!-- message中存放的是登录信息 -->
+<input type="hidden" name="message" id="message" value="${message}">
 
-　　　　　　2016-11-01 by.萧克南
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<noscript>
+<div style=" position:absolute; z-index:100000; height:2046px;top:0px;left:0px; width:100%; background:white; text-align:center;">
+    <img src="images/noscript.gif" alt='抱歉，请开启脚本支持！' />
+</div></noscript>
+    <div region="north" split="false" border="false" style="overflow: hidden; height: 50px;
+        background: url('images/top.jpg')  repeat-x center 50%;
+        color: #fff; font-family: Verdana, 微软雅黑,黑体">
+        <span style="float:right; padding-right:20px;" class="head"> 
+       	 <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut" onclick="logout()">安全退出</a>
+        </span>
+         <span style="float:right; padding-right:20px;" class="head"> 
+         		当前登录用户：<span id="loginuser">admin</span>
+         </span>
+        <span style="padding-left:10px; font-size: 36px; float:left;font-family:隶书;">运维管理平台</span>
+    </div>
+    <div region="south" split="false" style="height: 30px; background: #D2E0F2; ">
+        <div class="footer"><center>2015-2016&nbsp;&nbsp;&nbsp;&nbsp;辽宁移动版权所有</center></div>
+    </div>
+    <div region="west" hide="true" split="false" title="菜单" style="width:180px;" id="west">
+<div id='wnav' class="easyui-accordion" fit="true" border="false">
+		<!--  导航内容 -->
+				
+			</div>
+
+    </div>
+    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden;">
+        <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
+			<div title="首页" style="padding:20px;overflow:hidden; " id="home">
+			<div style="font-size:70px;text-shadow: 0 1px 1px rgba(1,1,1,10);text-align: center;box-shadow: 0px 5px 60px deepskyblue;    border-radius: 30px;color: deepskyblue;font-family: 隶书;width: 55%;margin-left:auto;margin-right:auto;    position: relative;    top: 30%;"></div>
+
+			</div>
+		</div>
+    </div>
+    
+    
+    <!--修改密码窗口-->
+    <div id="w" class="easyui-window" title="修改密码" collapsible="false" minimizable="false"
+        maximizable="false" icon="icon-save"  style="width: 300px; height: 150px; padding: 5px;
+        background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <form id="updatePasswordForm" action="<%=request.getContextPath() %>/account/updatePassword.action" method="post">
+                <table cellpadding=3>
+                    <tr>
+                        <td>新密码：</td>
+                        <td><input class="easyui-validatebox textbox" type="password" id="password" name="password" data-options="required:true" validType="length[6,15]"   ></input></td>
+                    </tr>
+                    <tr>
+                        <td>确认密码：</td>
+                        <td><input class="easyui-validatebox textbox" type="password" id="confirmPassword" name="confirmPassword" data-options="required:true"  validType="equalTo['#password']"   ></input></td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
+                <a id="btnEp" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" >
+                    确定</a> <a id="btnCancel" class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)">取消</a>
             </div>
         </div>
     </div>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="common/B-JUI/other/ie10-viewport-bug-workaround.js"></script>
+
+	<div id="mm" class="easyui-menu" style="width:150px;">
+		<div id="mm-tabupdate">刷新</div>
+		<div class="menu-sep"></div>
+		<div id="mm-tabclose">关闭</div>
+		<div id="mm-tabcloseall">全部关闭</div>
+		<div id="mm-tabcloseother">除此之外全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="mm-tabcloseright">当前页右侧全部关闭</div>
+		<div id="mm-tabcloseleft">当前页左侧全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="mm-exit">退出</div>
+	</div>
+
+
 </body>
 </html>
