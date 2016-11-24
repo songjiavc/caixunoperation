@@ -1,4 +1,4 @@
-package com.sdf.manager.user.bean;
+package com.richinfo.manager.user.bean;
 
 /** 
   * @ClassName: roleBean 

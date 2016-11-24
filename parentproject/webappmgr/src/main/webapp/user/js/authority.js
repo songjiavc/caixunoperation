@@ -2,9 +2,9 @@ var zNodes ;//放置树节点的全局变量
 $(document).ready(
 		function()
 		{
-			initDatagrid('');
+//			initDatagrid('');
 			closeDialog();
-//			initZnodes();
+			initZnodes();
 		}
 );
 
@@ -17,7 +17,7 @@ function initDatagrid(parentCode)
 	$('#datagrid').datagrid({
 		singleSelect:false,
 		queryParams: params,
-		url:contextPath + '/menu/getAuthList.action',//'datagrid_data1.json',
+		url:contextPath + '/authority/getAuthList.action',//'datagrid_data1.json',
 		method:'get',
 		border:false,
 		fit:true,//datagrid自适应
@@ -29,13 +29,11 @@ function initDatagrid(parentCode)
 		columns:[[
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
-				{field:'connectRole',hidden:true},//当前权限是否关联了有效的角色数据
-				{field:'isSystem',hidden:true},
 		        {field:'authName',width:120,title:'权限名称'},
-				{field:'code',title:'权限编码',width:120,align:'left'},
-				{field:'url',title:'权限url',width:120,align:'left'},
-				{field:'authImg',title:'权限图片',width:80,align:'left'},
-				{field:'status',title:'是否启用',width:80,align:'left',
+				{field:'authCode',title:'权限编码',width:120,align:'center'},
+				{field:'menuUrl',title:'权限url',width:120,align:'center'},
+				{field:'authImg',title:'权限图片',width:80,align:'center'},
+				{field:'status',title:'是否启用',width:80,align:'center',
 					formatter:function(value,row,index){
 							var showStatus = "";
 							if("1" == row.status)
@@ -57,7 +55,7 @@ function initDatagrid(parentCode)
 		            }  
 		        }  
 		    ]],  
-	    onLoadSuccess:function(data){  
+	    onLoadSuccess:function(data){ 
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'});  
 	        $('.auth').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
 	        
@@ -83,7 +81,7 @@ function closeDialog()
  */
 function updateAuth(code,isSystem)
 {
-	var url = contextPath + '/menu/getDetailAuth.action';
+	var url = contextPath + '/authority/getDetailAuth.action';
 	var data1 = new Object();
 	data1.code=code;//权限的id
 	
@@ -96,7 +94,6 @@ function updateAuth(code,isSystem)
 		        data:data1,
 		        dataType: "json",
 		        success: function (data) {
-		        	
 						$('#ffupdate').form('load',{
 							id:data.id,
 							code:data.code,
@@ -113,7 +110,7 @@ function updateAuth(code,isSystem)
 		        	
 		        },
 		        error: function (XMLHttpRequest, textStatus, errorThrown) {
-		            window.parent.location.href = contextPath + "/menu/error.action";
+//		            window.parent.location.href = contextPath + "/menu/error.action";
 		        }
 		   });
 			
@@ -134,7 +131,7 @@ function updateAuth(code,isSystem)
  */
 function deleteAuthList()
 {
-	var url = contextPath + '/menu/deleteAuth.action';
+	var url = contextPath + '/authority/deleteAuth.action';
 	var data1 = new Object();
 	
 	var codearr = new Array();
@@ -199,7 +196,7 @@ function deleteAuthList()
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/menu/error.action";
+//				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -220,7 +217,7 @@ function deleteAuthList()
  */
 function deleteAuth(code,isSystem,connectRole)
 {
-	var url = contextPath + '/menu/deleteAuth.action';
+	var url = contextPath + '/authority/deleteAuth.action';
 	var data1 = new Object();
 	var deleteFlag = true;//是否可以进行删除标志位
 	
@@ -270,7 +267,7 @@ function deleteAuth(code,isSystem,connectRole)
 			                	$.messager.alert('提示', data.message);
 			                },
 			                error: function (XMLHttpRequest, textStatus, errorThrown) {
-			                    window.parent.location.href = contextPath + "/menu/error.action";
+//			                    window.parent.location.href = contextPath + "/menu/error.action";
 			                }
 			           });
 			        	
@@ -285,50 +282,12 @@ function deleteAuth(code,isSystem,connectRole)
 	
 }
 
-/**
- * 初始化上级权限combobox数据
- */
-function initParentAuthList(addOrUpdate,code,parentauth)
-{
-	var parentAuthId = "parentAuthA";
-	
-	
-	var data = new Object();
-	data.status = "1";
-	
-	if("update" == addOrUpdate)
-		{//修改
-			data.code = code;
-			parentAuthId = "parentAuthU";
-		}
-	
-	$('#'+parentAuthId).combobox('clear');//清空combobox值
-	
-	$('#'+parentAuthId).combobox({
-			queryParams:data,
-			url:contextPath+'/menu/getParentAuth.action',
-			valueField:'code',
-			textField:'authName',
-			 onLoadSuccess: function (data1) { //数据加载完毕事件
-                 if (data1.length > 0 && "add" == addOrUpdate) 
-                 {
-                	 $("#"+parentAuthId).combobox('select',data1[0].code);
-                 }
-                 else
-            	 {
-            	 	$("#"+parentAuthId).combobox('select', parentauth);
-            	 }
-					
-             }
-		}); 
-}
-
 
 //提交添加权限form表单
 function submitAddauth()
 {
 	$('#ff').form('submit',{
-		url:contextPath+'/menu/saveOrUpdate.action',
+		url:contextPath+'/authority/saveOrUpdate.action',
 		onSubmit:function(param){
 				
 			return $('#ff').form('enableValidation').form('validate');
@@ -356,7 +315,7 @@ function submitAddauth()
 function submitUpdateauth()
 {
 	$('#ffupdate').form('submit',{
-		url:contextPath+'/menu/saveOrUpdate.action',
+		url:contextPath+'/authority/saveOrUpdate.action',
 		onSubmit:function(param){
 			return $('#ffupdate').form('enableValidation').form('validate');
 		},
@@ -388,7 +347,7 @@ function checkCode(id,code,authname)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "post",
-        url: contextPath+'/menu/checkValue.action',
+        url: contextPath+'/authority/checkValue.action',
         data:data,
         dataType: "json",
         success: function (data) {
@@ -398,7 +357,7 @@ function checkCode(id,code,authname)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/error.action";
+//            window.parwent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -429,7 +388,7 @@ function checkHaveChildAuth(id)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/error.action";
+//            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -474,8 +433,6 @@ $.extend($.fn.validatebox.defaults.rules, {
         		rules.checkCodes.message = "当前权限编码已存在"; 
                 return !checkCode($("#"+param[1]).val(),value,'');
     		}
-        	
-        	
         }
     }
 });
@@ -513,7 +470,7 @@ function initZnodes()
         		zNodes = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/error.action";
+//            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -528,7 +485,9 @@ function initZnodes()
  */
 function zTreeOnClick(event, treeId, treeNode) 
 {
-    initDatagrid(treeNode.id)
+    
+	alert(treeNode.id);
+	initDatagrid(treeNode.id);
 }
  
 

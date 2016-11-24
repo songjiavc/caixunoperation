@@ -3,10 +3,13 @@ package com.richinfo.manager.user.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.druid.util.StringUtils;
+import com.richinfo.manager.user.bean.AuthorityBean;
 import com.richinfo.manager.user.dao.AuthorityMapper;
 import com.richinfo.manager.user.model.Authority;
 import com.richinfo.manager.user.service.AuthorityService;
@@ -26,13 +29,6 @@ public class AuthorityServiceImpl implements AuthorityService {
 	private AuthorityMapper authorityMapper;
 
 	@Override
-	public List<Authority> getChildrenAuthorityList(String authParentId) {
-		
-		List<Authority> authList = authorityMapper.getAuthListByParentId(authParentId);
-		return authList;
-	}
-
-	@Override
 	public void deleteAuthorityById(String authId) {
 		Map<String,String> paramMap = new HashMap<String,String>();
 		paramMap.put("authId", authId);
@@ -41,15 +37,21 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public String insertOrUpdateAuthority(Authority authority) {
+	public String insertOrUpdateAuthority(AuthorityBean authorityBean) {
 		//判断是删除还是修改
-		String id = authority.getId();
-		if(authority.getId() == null){
+		String id = authorityBean.getId();
+		if(StringUtils.isEmpty(id)){
 			//id为空位添加
-			id = authorityMapper.insertAuthority(authority);
+			//初始化创建人和创建按时间
+			id = UUID.randomUUID().toString();
+			authorityBean.setId(id);
+			authorityMapper.insertAuthority(authorityBean);
 		}else{
 			//id不为空位修改
-			authorityMapper.updateAuthority(authority);
+			
+			Character oldStatus = this.getAuthorityById(id).getStatus();
+			//如果是开启
+			authorityMapper.updateAuthority(authorityBean);
 		}
 		return id;
 	}
@@ -62,9 +64,19 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	public List<Authority> getAuthorityListByParentId(String parentAuthId) {
+		List<Authority> authList = authorityMapper.getAuthListByParentId(parentAuthId);
+		return authList;
+	}
+
+	@Override
+	public boolean checkValue(AuthorityBean authorityBean) {
+		Integer count = authorityMapper.checkValue(authorityBean);
+		if(count > 0){
+			return true;
+		}else{
+			return false;
+		}
 		
-		
-		return null;
 	}
 	
 	

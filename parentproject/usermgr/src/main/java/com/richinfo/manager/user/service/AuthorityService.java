@@ -2,19 +2,11 @@ package com.richinfo.manager.user.service;
 
 import java.util.List;
 
+import com.richinfo.manager.user.bean.AuthorityBean;
 import com.richinfo.manager.user.model.Authority;
 
 
 public interface AuthorityService {
-	/** 
-	  * @Description: 根据父亲节点id获取所有子节点内容
-	  * @author songjia@richinfo.cn
-	  * @date 2016年11月21日 下午1:20:43 
-	  * @param authParentId
-	  * @return 
-	  */
-	public List<Authority> getChildrenAuthorityList(String authParentId);
-	
 	/** 
 	  * @Description: 根据权限id删除对应权限，逻辑删除
 	  * @author songjia@richinfo.cn
@@ -41,7 +33,7 @@ public interface AuthorityService {
 	  * @param authority
 	  * @return 
 	  */
-	public String insertOrUpdateAuthority(Authority authority);
+	public String insertOrUpdateAuthority(AuthorityBean authority);
 	
 	
 	/** 
@@ -53,4 +45,6 @@ public interface AuthorityService {
 	  * @return 
 	  */
 	public List<Authority> getAuthorityListByParentId(String parentAuthId);
+	
+	public boolean checkValue(AuthorityBean authority);
 }

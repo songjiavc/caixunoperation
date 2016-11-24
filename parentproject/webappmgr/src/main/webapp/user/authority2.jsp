@@ -25,8 +25,19 @@
   	    text:'添加',
   	    iconCls:'icon-add',
   	    handler:function(){
-  	   		 //初始化上级权限下拉框值
-  	    	initParentAuthList('add','','');
+  	   		//初始化上级权限下拉框值
+  	   		//获取选中树节点
+  	   		var selectAuthTreeNode = $.fn.zTree.getZTreeObj("authorityTree").getSelectedNodes()
+  	   		if(selectAuthTreeNode.length == 0){
+  	   			$.messager.alert('提示', '请在左侧菜单中选则父节点!');
+  	   			return false;
+  	   		}else{
+  	   			//如果存在选中节点，则将选中节点code name 赋给添加权限窗口
+  	   			$('#parentAuthName').val(selectAuthTreeNode[0].name);
+  	   			$('#parentAuthId').val(selectAuthTreeNode[0].id);
+  	   		}
+  	   		
+  	    	//initParentAuthList('add','','');
   	    	$("#addAuth").dialog('open');
   	    	
   	    }
@@ -80,14 +91,14 @@
             	modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
-                    text:'提交',
+                    text:'保存',
                     iconCls:'icon-ok',
                     handler:function(){
                         submitAddauth();
                     }
                 },{
                     text:'取消',
-                    iconCls:'icon-ok',
+                    iconCls:'icon-cancel',
                     handler:function(){
                         $('#addAuth').dialog('close');
                     }
@@ -105,15 +116,13 @@
 	        <div class="ftitle">
 	            <label for="authName">权限名称:</label>
 	            <input class="easyui-validatebox commonInput" type="text" id="authNameA" name="authName" data-options="required:true"
-	             validType="checkAname['#authNameA','idA']" missingMessage="权限名称不可以为空" ></input>
+	              missingMessage="权限名称不可以为空" ></input>
 	        </div>	
 	        <div class="ftitle">
+	            <input type="hidden" name="parentAuthId" id="parentAuthId"/>
 	            <label for="parentAuth">上级权限:</label>
-	            <div style="margin-right: 15%;float:right;">
-		            <select class="easyui-combobox" id="parentAuthA" name="parentAuth"  
-		          	  data-options="editable:false,required:true" style="width:200px;" >
-					</select>
-	            </div>
+	            <input class="easyui-validatebox commonInput" type="text" readonly="true" id="parentAuthName" name="parentAuthName" data-options="readonly:true,required:true"
+	              ></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="url">权限 url:</label>
@@ -162,12 +171,12 @@
 	        <div class="ftitle">
 	            <label for="authName">权限名称:</label>
 	            <input class="easyui-validatebox commonInput" type="text" id="authNameU" name="authName" data-options="required:true"
-	             validType="checkAname['#authNameU','idU']" missingMessage="权限名称不可以为空"></input>
+	             missingMessage="权限名称不可以为空"></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="parentAuthU">上级权限:</label>
 	            <div style="margin-right: 15%;float:right;">
-		            <select class="easyui-combobox commonInput" id="parentAuthU" name="parentAuth"  data-options="editable:false,required:true" 
+		            <select class="easyui-combobox commonInput" id="parentAuthU" name="parentAuth"  data-options="editable:true,required:true" 
 		            style="width:200px;" missingMessage="请选择上级权限">
 							<option value="0">无上级权限</option>
 					</select>

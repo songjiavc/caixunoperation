@@ -17,7 +17,11 @@ public class ResultBeanDataList<T>
 	
 	private String status;//返回状态（success of fail）
 	
-	private List<T> dataList = new ArrayList<T>();
+	private List<T> rows = new ArrayList<T>();
+	
+	private long total;
+	
+	
 	
 	public String getMessage() {
 		return message;
@@ -35,12 +39,20 @@ public class ResultBeanDataList<T>
 		this.status = status;
 	}
 
-	public List<T> getDataList() {
-		return dataList;
+	public List<T> getRows() {
+		return rows;
 	}
 
-	public void setDataList(List<T> dataList) {
-		this.dataList = dataList;
+	public void setRows(List<T> rows) {
+		this.rows = rows;
+	}
+
+	public long getTotal() {
+		return total;
+	}
+
+	public void setTotal(long total) {
+		this.total = total;
 	}
 	
 }

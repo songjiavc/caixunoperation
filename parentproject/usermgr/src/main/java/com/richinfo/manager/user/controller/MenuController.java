@@ -20,14 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.stat.TableStat.Condition;
+import com.alibaba.druid.util.StringUtils;
 import com.richinfo.manager.common.bean.ResultBean;
+import com.richinfo.manager.common.bean.TreeBean;
 import com.richinfo.manager.common.exception.GlobalExceptionHandler;
 import com.richinfo.manager.common.util.Constants;
 import com.richinfo.manager.common.util.LoginUtils;
+import com.richinfo.manager.user.bean.AuthorityBean;
 import com.richinfo.manager.user.bean.MenuBean;
 import com.richinfo.manager.user.model.Authority;
 import com.richinfo.manager.user.service.AuthorityService;
-import com.richinfo.manager.user.service.UserService;
 
 
 /** 
@@ -227,85 +230,30 @@ public class MenuController extends GlobalExceptionHandler{
 		return menus;
 	}
 	
-	/**
-	 * 
-	* @Description: TODO(保存或者修改权限) 
-	* @author songjia@richinfo.cn
-	* @date 2015年10月9日 下午2:38:35
-	 */
-	@RequestMapping(value = "/saveOrUpdate", method = RequestMethod.GET)
-	public @ResponseBody ResultBean saveOrUpdate(
-			@RequestParam(value="id",required=false) String id,
-			@RequestParam(value="code",required=false) String code,
-			@RequestParam(value="authName",required=false) String authName,
-			@RequestParam(value="parentAuth",required=false) String parentAuth,
-			@RequestParam(value="url",required=false) String url,
-			@RequestParam(value="authImg",required=false) String authImg,
-			@RequestParam(value="status",required=false) Character status,
-			ModelMap model,HttpSession httpSession) throws Exception
-	{
-		ResultBean returnMap = new ResultBean();
-		
-		Authority authority = new Authority();
-		
-		Character oldAuthStatus = authority.getStatus();
-		authority = authorityService.getAuthorityById(id);//判断当前code所属的auth是否已存在，若存在则进行修改操作
-		authority.setId(id);
-		authority.setCode(code);
-		authority.setAuthName(authName);
-		authority.setParentAuthId(parentAuth);
-		authority.setMenuUrl(url);
-		authority.setAuthImg(authImg);
-		authority.setStatus(status);
-		authority.setUpdater(LoginUtils.getAuthenticatedUserId(httpSession));
-		authority.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-		
-		
-		return returnMap;
-	}
-	
 
-	/**
-	 * 
-	* @Description: TODO(根据code获取权限的详细信息（根据唯一条件获取数据）) 
-	* @author songjia@richinfo.cn
-	* @date 2015年10月10日 上午10:16:35
-	 */
-	@RequestMapping(value = "/getDetailAuth", method = RequestMethod.GET)
-	public @ResponseBody Authority getDetailAuth(
-			@RequestParam(value="code",required=false) String authId,
-			ModelMap model,HttpSession httpSession) throws Exception
-	{
-		Authority authority = new Authority();
-		
-		authority = authorityService.getAuthorityById(authId);
-		
-		return authority;
-	}
-	
-	/**
-	 * 
-	* @Description: TODO(查询权限数据带分页) 
-	* @author songjia@richinfo.cn
-	* @date 2015年10月14日 上午8:58:45
-	 */
-	@RequestMapping(value = "/getAuthList", method = RequestMethod.GET)
-	public @ResponseBody Map<String,Object> getAuthList(
-			@RequestParam(value="page",required=false) int page,
-			@RequestParam(value="rows",required=false) int rows,
-			@RequestParam(value="status",required=false) String status,
-			@RequestParam(value="parentCode",required=false) String parentCode,
-			ModelMap model,HttpSession httpSession) throws Exception
-	{
-		Map<String,Object> returnData = new HashMap<String,Object> ();
-		
-		
+	/** 
+	  * @Description: 树节点数据获取
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月24日 上午10:31:49 
+	  * 
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception 
+	  */
+	@RequestMapping(value = "/getTreedata", method = RequestMethod.POST)
+	public @ResponseBody List<TreeBean> getTreedata(ModelMap model,HttpSession httpSession) throws Exception {
+		//放置分页参数
 		//参数
-		StringBuffer buffer = new StringBuffer();
-		List<Object> params = new ArrayList<Object>();
-//		getChildrenAuthorityList
-		
-		return returnData;
+		List<TreeBean> treeBeanList = new ArrayList<TreeBean> ();
+		TreeBean treeBean = new TreeBean();
+		treeBean.setId("1");
+		treeBean.setName("根权限");
+		treeBean.setOpen(true);
+		treeBean.setpId(null);
+		treeBean.setParent(true);
+		treeBeanList.add(treeBean);
+		return treeBeanList;
 	}
 	
 }

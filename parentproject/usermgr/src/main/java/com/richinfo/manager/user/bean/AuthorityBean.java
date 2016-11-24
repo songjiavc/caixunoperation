@@ -1,8 +1,6 @@
-package com.richinfo.manager.user.model;
+package com.richinfo.manager.user.bean;
 
-import java.util.List;
-
-import com.richinfo.manager.common.util.BaseModel;
+import com.richinfo.manager.common.util.BaseBean;
 
 
 /** 
@@ -12,11 +10,11 @@ import com.richinfo.manager.common.util.BaseModel;
   * @date 2016年11月18日 下午2:40:13 
   *  
   */
-public class Authority extends BaseModel{
+public class AuthorityBean extends BaseBean{
 	
 	private String id;
 	
-	private String authCode;
+	private String code;
 	
 	private String authName;
 	
@@ -26,8 +24,9 @@ public class Authority extends BaseModel{
 	
 	private String authImg;
 	
-
-	private List<Role> roleList;
+	private Character oldStatus;
+	
+	private Character status;
 	
 	/**
 	 * @return the id
@@ -43,14 +42,18 @@ public class Authority extends BaseModel{
 		this.id = id;
 	}
 
-	
-
-	public String getAuthCode() {
-		return authCode;
+	/**
+	 * @return the code
+	 */
+	public String getCode() {
+		return code;
 	}
 
-	public void setAuthCode(String authCode) {
-		this.authCode = authCode;
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	/**
@@ -109,18 +112,20 @@ public class Authority extends BaseModel{
 		this.authImg = authImg;
 	}
 
-	/**
-	 * @return the roleList
-	 */
-	public List<Role> getRoleList() {
-		return roleList;
+	public Character getOldStatus() {
+		return oldStatus;
 	}
 
-	/**
-	 * @param roleList the roleList to set
-	 */
-	public void setRoleList(List<Role> roleList) {
-		this.roleList = roleList;
+	public void setOldStatus(Character oldStatus) {
+		this.oldStatus = oldStatus;
 	}
 
+	public Character getStatus() {
+		return status;
+	}
+
+	public void setStatus(Character status) {
+		this.status = status;
+	}
+	
 }
