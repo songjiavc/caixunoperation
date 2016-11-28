@@ -16,82 +16,52 @@ public class Role extends BaseModel{
 
 	private String id;
 	
-	private String code;
+	private String roleCode;
 	
-	private String name;
+	private String roleName;
 	
 	private List<User> userList;
 	
 	private List<Authority> authList;
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the code
-	 */
-	public String getCode() {
-		return code;
+	public String getRoleCode() {
+		return roleCode;
 	}
 
-	/**
-	 * @param code the code to set
-	 */
-	public void setCode(String code) {
-		this.code = code;
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
 	}
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
-	/**
-	 * @return the userList
-	 */
 	public List<User> getUserList() {
 		return userList;
 	}
 
-	/**
-	 * @param userList the userList to set
-	 */
 	public void setUserList(List<User> userList) {
 		this.userList = userList;
 	}
 
-	/**
-	 * @return the authList
-	 */
 	public List<Authority> getAuthList() {
 		return authList;
 	}
 
-	/**
-	 * @param authList the authList to set
-	 */
 	public void setAuthList(List<Authority> authList) {
 		this.authList = authList;
 	}
-	
+
 }

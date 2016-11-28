@@ -266,8 +266,8 @@
     
     <!--修改密码窗口-->
     <div id="w" class="easyui-window" title="修改密码" collapsible="false" minimizable="false"
-        maximizable="false" icon="icon-save"  style="width: 300px; height: 150px; padding: 5px;
-        background: #fafafa;">
+        maximizable="false" icon="icon-save" closed=true style="width: 300px; height: 210px; padding: 5px;
+        background: #fafafa;display:none;">
         <div class="easyui-layout" fit="true">
             <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
                 <form id="updatePasswordForm" action="<%=request.getContextPath() %>/account/updatePassword.action" method="post">

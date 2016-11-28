@@ -1,50 +1,42 @@
 var _menus;
 
-$(function() {
-	
-	var message = $("#message").val();//获取登录返回信息
-//	 openPwd();
-	
-	if("success" == message)//登录信息正确
-		{
-	
+	$(document).ready(
+		function(){
+		var message = $("#message").val();//获取登录返回信息
+		if("success" == message){
 		     $('#editpass').click(function() {
-		         $('#w').window('open');
+		    	 openPwd();
 		     });
-	
 		     $('#btnEp').click(function() {
 		    	 updatePassword();
 		     })
-	
-				$('#btnCancel').click(function(){closePwd();})
-	
-		   
-			
-			
-			tabClose();
-			tabCloseEven();
-			
-	
-			// 导航菜单绑定初始化
-			$("#wnav").accordion( {
+			 $('#btnCancel').click(function(){closePwd();})
+			 tabClose();
+			 tabCloseEven();
+	    		// 导航菜单绑定初始化
+		   	 $("#wnav").accordion( {
 				animate : true
-			});
-			
-			
+			 });
 			initMenu();//加载菜单
-			
-			
 			InitLeftMenu();
-			
-//			initLoginMes();//初始化登录人信息
+	//			initLoginMes();//初始化登录人信息
 		}
-	else
-		{
+		else{
 			//登录失败，跳转回登录页
 			window.location.href=contextPath + "/menu/logout.action?alertmsg="+message;
 		}
-});
+	});
 
+
+	//设置登录窗口
+	function openPwd() {
+		$("#w").window('open');//初始化添加权限弹框关闭
+	}
+	
+	//关闭登录窗口
+	function closePwd() {
+		$("#w").window('close');//初始化添加权限弹框关闭
+	}
 /**
  * 初始化登陆人信息
  */

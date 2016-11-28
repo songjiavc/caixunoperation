@@ -17,16 +17,16 @@
         <result property="parentAuthId" column="parent_auth_id" /> 
         <result property="menuUrl" column="menu_url" /> 
         <result property="authImg" column="auth_img" /> 
-        
     </resultMap>
+    
     <!-- 根据权限id获取权限实体 -->
-    <select id="getAuthById" parameterType="java.lang.String" resultMap="authMap">
+    <select id="getAuthorityByid" parameterType="java.lang.String" resultMap="authMap">
     	SELECT
-    		* 
+    		*
     	FROM 
     		T_YWPT_AUTHORITY
     	WHERE 
-    		ID = #{id}
+    		ID = #{authId}
     </select>
     <!-- 根据父节点id获取权限列表 -->
     <select id="getAuthListByParentId" parameterType = "String" resultMap="authMap">
@@ -39,63 +39,78 @@
     	  AND
     	    status = 1
     </select>
+    
+    <!-- 根据父节点id获取权限列表 -->
+    <select id="getIsStatusAuthList" resultMap="authMap">
+    	SELECT 
+    		*
+    	FROM 
+    		t_ywpt_authority
+    	WHERE
+    	    status = 1
+    </select>
+    
     <!-- 插入权限 -->
-    <insert id="insertAuthority" parameterType="com.richinfo.manager.user.bean.AuthorityBean">
+    <insert id="insertAuthority" parameterType="com.richinfo.manager.user.model.Authority">
     	INSERT INTO T_YWPT_AUTHORITY(id,auth_code,auth_name,parent_auth_id,menu_url,auth_img,status,creater,create_time)
-    	VALUES(#{id},#{code},#{authName},#{parentAuthId},#{menuUrl},#{authImg},#{status},#{creater},#{createTime})
+    	VALUES(#{id},#{authCode},#{authName},#{parentAuthId},#{menuUrl},#{authImg},#{status},#{creater},#{createTime})
     </insert>
     
-    <update id="deleteAuthorityById" parameterType="Map">
-    	UPDATE 
-    		T_YWPT_AUTHORITY 
-    	SET 
-    		status = ${status}
-    	 WHERE
-         	ID = #{authId}
-    </update>
-    
     <!-- checkvalue 检查 权限名称和权限编码都不可以相同 -->
-    <select id="checkValue" resultType="java.lang.Integer" parameterType="com.richinfo.manager.user.bean.AuthorityBean">
+    <select id="checkValue" resultType="java.lang.Integer" parameterType="com.richinfo.manager.user.model.Authority">
     	SELECT 
     		count(1)
     	FROM 
     		t_ywpt_authority
         <where> 
           <if test="id != null and id != ''">
-                AND  id != ${id}
+                AND  id != #{id}
           </if>
           <if test="code != null and code != ''">
-                AND  code = ${code}
+                AND  auth_code = #{authCode}
           </if>
         </where>
     </select>
+    
+    <!-- checkChildNum 判断用于多少子权限-->
+    <select id="checkChildNum" resultType="java.lang.Integer" parameterType="com.richinfo.manager.user.model.Authority">
+    	SELECT 
+    		count(1)
+    	FROM 
+    		t_ywpt_authority
+        <where> 
+          <if test="parentAuthId != null and parentAuthId != ''">
+                AND  parent_auth_id = #{parentAuthId}
+          </if>
+          <if test="status != null and status != ''">
+                AND  status = #{status}
+          </if> 
+        </where>
+    </select>
+    
     
     <!-- 更新权限内容 -->
     <update id="updateAuthority" parameterType="com.richinfo.manager.user.model.Authority">
     	UPDATE 
     		T_YWPT_AUTHORITY 
     	<set> 
+    		  updater = #{updater},
+              update_time = #{updateTime},
     		  <if test="code != null and code != ''">
-                and  code = ${code},
+                 auth_code = #{authCode},
               </if>
-                <if test="authName != null and authName != ''">
-                and  auth_name = ${authName},
+              <if test="authName != null and authName != ''">
+                 auth_name = #{authName},
               </if>
-                <if test="menuUrl != null and menuUrl != ''">
-                and  menu_url = ${menuUrl},
+              <if test="menuUrl != null and menuUrl != ''">
+                 menu_url = #{menuUrl},
               </if>
               <if test="status != null and status != ''">
-                and  status = ${status},
-              </if>
-              <if test="updater != null and updater != ''">
-                and  updater = ${updater},
-              </if>
-              <if test="updateTime != null and updateTime != ''">
-                and  update_time = ${updateTime},
+                 status = #{status},
               </if>
          </set>
          WHERE
-         	ID = #id
+         	ID = #{id}
     </update>
     
     <!-- 物理删除权限内容，暂时不用 -->

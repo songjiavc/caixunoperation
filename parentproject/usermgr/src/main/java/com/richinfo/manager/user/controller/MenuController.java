@@ -179,14 +179,14 @@ public class MenuController extends GlobalExceptionHandler{
 		mb5.setMenuid("112");
 		mb5.setIcon("icon-nav");
 		mb5.setMenuname("权限管理");
-		mb5.setUrl("/user/authority2.jsp");
+		mb5.setUrl("/authority/initAuthority.action");
 		menus.add(mb5);
 		
 		MenuBean mb1 = new MenuBean();
 		mb1.setMenuid("111");
 		mb1.setIcon("icon-nav");
 		mb1.setMenuname("角色管理");
-		mb1.setUrl("/station/stationmanager.jsp");
+		mb1.setUrl("/role/initRole.action");
 		menus.add(mb1);
 		
 		
@@ -231,29 +231,4 @@ public class MenuController extends GlobalExceptionHandler{
 	}
 	
 
-	/** 
-	  * @Description: 树节点数据获取
-	  * @author songjia@richinfo.cn
-	  * @date 2016年11月24日 上午10:31:49 
-	  * 
-	  * @param model
-	  * @param httpSession
-	  * @return
-	  * @throws Exception 
-	  */
-	@RequestMapping(value = "/getTreedata", method = RequestMethod.POST)
-	public @ResponseBody List<TreeBean> getTreedata(ModelMap model,HttpSession httpSession) throws Exception {
-		//放置分页参数
-		//参数
-		List<TreeBean> treeBeanList = new ArrayList<TreeBean> ();
-		TreeBean treeBean = new TreeBean();
-		treeBean.setId("1");
-		treeBean.setName("根权限");
-		treeBean.setOpen(true);
-		treeBean.setpId(null);
-		treeBean.setParent(true);
-		treeBeanList.add(treeBean);
-		return treeBeanList;
-	}
-	
 }

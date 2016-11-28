@@ -1,6 +1,7 @@
 package com.richinfo.manager.user.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,9 @@ import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.richinfo.manager.common.bean.ResultBean;
+import com.richinfo.manager.common.bean.ResultBeanData;
 import com.richinfo.manager.common.bean.ResultBeanDataList;
+import com.richinfo.manager.common.bean.TreeBean;
 import com.richinfo.manager.common.util.LoginUtils;
 import com.richinfo.manager.user.bean.AuthorityBean;
 import com.richinfo.manager.user.model.Authority;
@@ -45,7 +48,7 @@ public class AuthController extends BaseController{
 	 * @desc  初始化权限页面
 	 * @return
 	 */
-	@RequestMapping(value = "/initAuthority.action")
+	@RequestMapping(value = "/initAuthority")
 	public String initAuthority(HttpServletRequest request,ModelMap model,HttpSession httpSession) {
  		///authority/initAuthority.action
  		return "user/authority";
@@ -57,7 +60,7 @@ public class AuthController extends BaseController{
 	* @author songjia@richinfo.cn
 	* @date 2015年10月9日 下午2:38:35
 	 */
-	@RequestMapping(value = "/saveOrUpdate.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
 	public @ResponseBody ResultBean saveOrUpdate(
 			@RequestParam(value="id",required=false) String id,
 			@RequestParam(value="code",required=false) String code,
@@ -79,10 +82,8 @@ public class AuthController extends BaseController{
 		authorityBean.setStatus(status);
 		if(StringUtils.isEmpty(id)){
 			authorityBean.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
-			authorityBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		}else{
 			authorityBean.setUpdater(LoginUtils.getAuthenticatedUserCode(httpSession));
-			authorityBean.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		}
 		authorityService.insertOrUpdateAuthority(authorityBean);
 		resultBean.setStatus("success");
@@ -93,25 +94,23 @@ public class AuthController extends BaseController{
 
 	/**
 	 * 
-	* @Description: TODO(根据code获取权限的详细信息（根据唯一条件获取数据）) 
+	* @Description:(根据code获取权限的详细信息（根据唯一条件获取数据）) 
 	* @author songjia@richinfo.cn
 	* @date 2015年10月10日 上午10:16:35
 	 */
-	@RequestMapping(value = "/getDetailAuth.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/getDetailAuth", method = RequestMethod.GET)
 	public @ResponseBody Authority getDetailAuth(
 			@RequestParam(value="code",required=false) String authId,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
 		Authority authority = new Authority();
-		
 		authority = authorityService.getAuthorityById(authId);
-		
 		return authority;
 	}
 	
 	/**
 	 * 
-	* @Description: TODO(查询权限数据带分页) 
+	* @Description:(查询权限数据带分页) 
 	* @author songjia@richinfo.cn
 	* @date 2015年10月14日 上午8:58:45
 	 */
@@ -168,5 +167,84 @@ public class AuthController extends BaseController{
 	}
 	
 	
+	/** 
+	  * @Description: 判断存在多少子权限
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月25日 下午1:44:19 
+	  * @param id
+	  * @param code
+	  * @param authName
+	  * @param status
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception 
+	  */
+	@RequestMapping(value = "/checkChildNum", method = RequestMethod.POST)
+	public @ResponseBody ResultBeanData<Integer>  checkChildNum(
+			@RequestParam(value="parentAuthId",required=false) String parentAuthId,
+			ModelMap model,HttpSession httpSession) throws Exception {
+		ResultBeanData<Integer> resultBean = new ResultBeanData<Integer>();
+		AuthorityBean authorityBean = new AuthorityBean();
+		authorityBean.setParentAuthId(parentAuthId);
+		authorityBean.setStatus('1');
+		Integer count = authorityService.checkChildNum(authorityBean);
+		resultBean.setEntity(count);
+		return resultBean;
+	}
 	
+	
+	
+	/** 
+	  * @Description: 树节点数据获取
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月24日 上午10:31:49 
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception 
+	  */
+	@RequestMapping(value = "/getTreedata", method = RequestMethod.POST)
+	public @ResponseBody List<TreeBean> getTreedata(ModelMap model,HttpSession httpSession) throws Exception {
+		List<Authority> authes = authorityService.getIsStatusAuthList();
+		List<TreeBean> treeBeanList = new ArrayList<TreeBean> ();
+		for (Authority authority : authes) {
+			TreeBean treeBeanIn = new TreeBean();
+			treeBeanIn.setId(authority.getId());
+			treeBeanIn.setName(authority.getAuthName());
+			treeBeanIn.setOpen(true);
+			treeBeanIn.setpId(authority.getParentAuthId());
+			treeBeanList.add(treeBeanIn);
+		}
+		return treeBeanList;
+	}
+	
+	/**
+	 * 
+	* @Description: 删除权限
+	* @author songjia@richinfo.cn
+	* @date 2015年10月12日 下午4:02:56
+	 */
+	@RequestMapping(value = "/deleteAuth", method = RequestMethod.POST)
+	public @ResponseBody ResultBean deleteAuth(
+			@RequestParam(value="ids",required=false) String[] ids,
+			ModelMap model,HttpSession httpSession) throws Exception
+	{
+		ResultBean resultBean = new ResultBean();
+		
+		AuthorityBean authorityBean ;
+		for (String id : ids)
+		{
+			authorityBean = new AuthorityBean();
+			authorityBean.setId(id);
+			authorityBean.setStatus('0');
+			authorityBean.setUpdater(LoginUtils.getAuthenticatedUserCode(httpSession));
+			authorityService.insertOrUpdateAuthority(authorityBean);
+		}		
+		
+		resultBean.setStatus("success");
+		resultBean.setMessage("删除成功!");
+		
+		return resultBean;
+	}
 }

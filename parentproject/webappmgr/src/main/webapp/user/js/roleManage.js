@@ -1,54 +1,20 @@
 $(document).ready(function(){
-			closeDialog();
-			initDatagrid();
-			
-			bindComboboxChange();
-		});
-
-/**
- * 绑定上级角色下拉框改变事件
- */
-function bindComboboxChange ()
-{
-	//添加角色的角色上级权限绑定
-	$("#parentRoleA").combobox({
-
-		 onSelect: function (n,o) {
-			 $("#parentRoleAname").val($("#parentRoleA").combobox("getText"));
-		}
-
-		}); 
-	//修改角色的角色上级权限绑定
-	$("#parentRoleU").combobox({
-
-		 onSelect: function (n,o) {
-			 $("#parentRoleUname").val($("#parentRoleU").combobox("getText"));
-		}
-
-		}); 
-}
-
-//关闭弹框
-function closeDialog()
-{
-	$('#w').dialog('close');//初始化权限设置弹框关闭
-	$("#addRole").dialog('close');//初始化添加角色弹框关闭
-	$("#updateRole").dialog('close');
-}
-
+	initDatagrid();
+});
 
 function initDatagrid()
 {
 	$('#datagrid').datagrid({
 		singleSelect:false,
 		rownumbers:false,
-		url:contextPath + '/role/getRoleList.action',//'datagrid_data1.json',
+		url:contextPath + '/role/getRoleList.action',
 		method:'get',
 		border:false,
 		singleSelect:false,
 		fit:true,//datagrid自适应
 		fitColumns:true,
 		pagination:true,
+		
 		collapsible:false,
 		toolbar:toolbar,
 //		pageSize:10,
@@ -56,10 +22,8 @@ function initDatagrid()
 		columns:[[
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
-				{field:'isSystem',hidden:true},
-		        {field:'name',width:120,title:'角色名称'},
-				{field:'code',title:'角色编码',width:120,align:'left'},
-				{field:'parentRolename',title:'角色上级角色',width:120,align:'left'},
+		        {field:'roleName',width:120,title:'角色名称',align:'center'},
+				{field:'roleCode',title:'角色编码',width:120,align:'center'},
 //				{field:'status',title:'是否启用',width:80,align:'left',
 //					formatter:function(value,row,index){
 //							var showStatus = "";
@@ -74,6 +38,8 @@ function initDatagrid()
 //							return showStatus;
 //						}
 //					},
+				{field:'creater',title:'创建人',width:120,align:'center'},
+				{field:'createTime',title:'创建时间',width:120,align:'center'},
 					{field:'opt',title:'操作',width:160,align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateRole(&quot;'+row.id+'&quot;,&quot;'+row.isSystem+'&quot;)" href="javascript:void(0)">编辑</a>'
@@ -86,7 +52,7 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
-	        $('.manage').linkbutton({text:'权限设置',plain:true,iconCls:'icon-auth'});  
+	        $('.manage').linkbutton({text:'权限设置',plain:true,iconCls:'icon-auth'});
 	        
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
@@ -151,7 +117,7 @@ function updateRole(id,isSystem)
  */
 function authManage(id,parentRole)
 {
-	initZnodes(id);
+	//initZnodes(id);
 	
 	//初始化已拥有的权限
 	var url = contextPath + '/role/getAuthListOfRole.action';

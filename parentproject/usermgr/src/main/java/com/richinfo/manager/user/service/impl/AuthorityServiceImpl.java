@@ -1,5 +1,6 @@
 package com.richinfo.manager.user.service.impl;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,26 +41,42 @@ public class AuthorityServiceImpl implements AuthorityService {
 	public String insertOrUpdateAuthority(AuthorityBean authorityBean) {
 		//判断是删除还是修改
 		String id = authorityBean.getId();
+		Authority authority = null;
 		if(StringUtils.isEmpty(id)){
 			//id为空位添加
 			//初始化创建人和创建按时间
 			id = UUID.randomUUID().toString();
-			authorityBean.setId(id);
-			authorityMapper.insertAuthority(authorityBean);
+			authority = new Authority();
+			authority.setId(id);
+			authority.setAuthCode(authorityBean.getCode());
+			authority.setAuthName(authorityBean.getAuthName());
+			authority.setAuthImg(authorityBean.getAuthImg());
+			authority.setMenuUrl(authorityBean.getMenuUrl());
+			authority.setParentAuthId(authorityBean.getParentAuthId());
+			authority.setStatus(authorityBean.getStatus());
+			authority.setCreater(authorityBean.getCreater());
+			authority.setCreateTime(new Timestamp(System.currentTimeMillis()));
+			authorityMapper.insertAuthority(authority);
 		}else{
 			//id不为空位修改
-			
-			Character oldStatus = this.getAuthorityById(id).getStatus();
+			authority = new Authority();
+			authority.setAuthCode(authorityBean.getCode());
+			authority.setAuthName(authorityBean.getAuthName());
+			authority.setAuthImg(authorityBean.getAuthImg());
+			authority.setMenuUrl(authorityBean.getMenuUrl());
+			authority.setParentAuthId(authorityBean.getParentAuthId());
+			authority.setStatus(authorityBean.getStatus());
+			authority.setCreater(authorityBean.getCreater());
+			authority.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 			//如果是开启
-			authorityMapper.updateAuthority(authorityBean);
+			authorityMapper.updateAuthority(authority);
 		}
 		return id;
 	}
 
 	@Override
 	public Authority getAuthorityById(String authId) {
-		// TODO Auto-generated method stub
-		return null;
+		return authorityMapper.getAuthorityByid(authId);
 	}
 
 	@Override
@@ -70,7 +87,13 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	public boolean checkValue(AuthorityBean authorityBean) {
-		Integer count = authorityMapper.checkValue(authorityBean);
+		Authority authority = new Authority();
+		authority.setAuthCode(authorityBean.getCode());
+		authority.setAuthName(authorityBean.getAuthName());
+		authority.setStatus('1');
+		authority.setId(authorityBean.getId());
+		
+		Integer count = authorityMapper.checkValue(authority);
 		if(count > 0){
 			return true;
 		}else{
@@ -79,6 +102,19 @@ public class AuthorityServiceImpl implements AuthorityService {
 		
 	}
 	
+	public Integer checkChildNum(AuthorityBean authorityBean){
+		
+		Authority authority = new Authority();
+		authority.setStatus(authorityBean.getStatus());
+		authority.setParentAuthId(authorityBean.getParentAuthId());
+		Integer count = authorityMapper.checkChildNum(authority);
+		return count;
+		
+	}
 	
+	@Override
+	public List<Authority> getIsStatusAuthList(){
+		return authorityMapper.getIsStatusAuthList();
+	}
 
 }

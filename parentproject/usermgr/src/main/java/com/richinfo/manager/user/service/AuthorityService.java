@@ -33,7 +33,7 @@ public interface AuthorityService {
 	  * @param authority
 	  * @return 
 	  */
-	public String insertOrUpdateAuthority(AuthorityBean authority);
+	public String insertOrUpdateAuthority(AuthorityBean authorityBean);
 	
 	
 	/** 
@@ -46,5 +46,32 @@ public interface AuthorityService {
 	  */
 	public List<Authority> getAuthorityListByParentId(String parentAuthId);
 	
+	/** 
+	  * @Description: 判断逻辑主键code是否重复
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月25日 上午8:55:53 
+	  * 
+	  * @param authority
+	  * @return 
+	  */
 	public boolean checkValue(AuthorityBean authority);
+	
+	/** 
+	  * @Description: 判断存在多少个有效子权限
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月25日 下午1:47:12 
+	  * 
+	  * @param authority
+	  * @return 
+	  */
+	public Integer checkChildNum(AuthorityBean authority);
+	
+	/** 
+	  * @Description: 获取所有有效权限列表
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月25日 上午9:01:31 
+	  * 
+	  * @return 
+	  */
+	public List<Authority> getIsStatusAuthList();
 }

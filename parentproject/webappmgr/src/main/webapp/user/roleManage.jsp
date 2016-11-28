@@ -4,11 +4,27 @@
 <head>
     <title>角色管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <%--全局引入的css文件 --%>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/material/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/icon.css"/>    
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/default.css"/>
+    <link href="<%=request.getContextPath() %>/common/ztree/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
+   
+    
+    <%--全局引入的js文件 --%>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/jquery.easyui.min.js"></script>    
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="<%=request.getContextPath() %>/common/ztree/js/jquery.ztree.core-3.5.js" type="text/javascript"></script>
+    <script src="<%=request.getContextPath() %>/common/ztree/js/jquery.ztree.excheck-3.5.js" type="text/javascript"></script>
+    
     <script src="<%=request.getContextPath() %>/user/js/roleManage.js" type="text/javascript"></script>
     
     <script type="text/javascript">
-  	var toolbar = [{
+    
+    var contextPath = '<%=request.getContextPath() %>';
+    
+    var toolbar = [{
   	    text:'添加',
   	    iconCls:'icon-add',
   	    handler:function(){
@@ -59,7 +75,7 @@
   
   
   <!-- 权限设置弹框 -->
-  <div id="w" class="easyui-dialog" title="权限设置" style="width:400px;height:300px;padding:10px"
+  <div id="w" class="easyui-dialog" title="权限设置" style="width:400px;height:300px;padding:10px;display:none;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -71,7 +87,7 @@
                     }
                 },{
                     text:'取消',
-                    iconCls:'icon-ok',
+                    iconCls:'icon-cancel',
                     handler:function(){
                         $('#w').dialog('close');
                     }
@@ -84,7 +100,7 @@
     </div>
     
     <!-- 添加角色弹框 -->
-  <div id="addRole" class="easyui-dialog"  title="添加角色" style="width:400px;height:300px;padding:10px"
+  <div id="addRole" class="easyui-dialog" title="添加角色" style="width:400px;height:300px;padding:10px;display:none;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -96,14 +112,14 @@
                     }
                 },{
                     text:'取消',
-                    iconCls:'icon-ok',
+                    iconCls:'icon-cancel',
                     handler:function(){
                         $('#addRole').dialog('close');
                         $('#parentRoleAname').val('');
                     }
                 }]
             ">
-		<form id="ff" method="get" novalidate>
+		<form id="ff" method="post" novalidate>
 	        <div class="ftitle">
 	            <label for="name">角色编码:</label>
 	            <input type="hidden" name="id" id="idA"/>
@@ -115,15 +131,7 @@
 	            <input class="easyui-validatebox commonInput" type="text" id="nameA" name="name" data-options="required:true"
 	             validType="checkAname['#nameA','idA']" missingMessage="角色名称不可以为空" ></input>
 	        </div>
-	        <div class="ftitle">
-	            <label for="subject">角色上级:</label>
-	            <div style="margin-right: 15%;float:right;">
-	            	<input type="hidden" id="parentRoleAname" name="parentRolename"/>
-		            <select class="easyui-combobox" id="parentRoleA" name="parentRole"  
-		          	  data-options="editable:false" style="width:200px;" >
-					</select>
-	            </div>
-	        </div>
+	  
 	        <!--  <div class="ftitle">
 	            <label for="isVisible">是否启用:</label>
 	            <div style="float:right;margin-right: 40%;">
@@ -134,7 +142,7 @@
 	      </form>
     </div>
      <!-- 修改角色弹框 -->
-     <div id="updateRole" class="easyui-dialog"  title="修改角色" style="width:400px;height:300px;padding:10px"
+     <div id="updateRole" class="easyui-dialog"  title="修改角色" style="width:400px;height:300px;padding:10px;display:none;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -153,7 +161,7 @@
                     }
                 }]
             ">
-		<form id="ffUpdate" method="get" novalidate>
+		<form id="ffUpdate" method="post" novalidate>
 	         <div class="ftitle">
 	            <label for="name">角色编码:</label>
 	             <input type="hidden" name="id" id="idU"/>
@@ -165,15 +173,6 @@
 	            <input class="easyui-validatebox commonInput" type="text" id="nameU" name="name" data-options="required:true"
 	             validType="checkAname['#nameU','idU']" missingMessage="角色名称不可以为空" ></input>
 	        </div>
-	        <div class="ftitle">
-	            <label for="subject">角色上级:</label>
-	            <div style="margin-right: 15%;float:right;">
-	         	   <input type="hidden" id="parentRoleUname" name="parentRolename"/>
-		            <select class="easyui-combobox" id="parentRoleU" name="parentRole"  
-		          	  data-options="editable:false" style="width:200px;" >
-					</select>
-	            </div>
-	        </div>
 	         <!-- <div class="ftitle">
 	            <label for="isVisible">是否启用:</label>
 	            <div style="float:right;margin-right: 40%;">
@@ -181,12 +180,7 @@
 		            <input class="easyui-validatebox" style="margin-left:10px;" type="radio" name="status" value="0">否</input>
 		        </div>
 	        </div> -->
-	      </form>
+		</form>
     </div>
 </body>
-	
- <%-- <script src="<%=request.getContextPath() %>/js/ztree/jquery-1.4.4.min.js" type="text/javascript"></script> --%>
-    <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.core-3.5.js" type="text/javascript"></script>	
-    <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.excheck-3.5.js" type="text/javascript"></script>	
-	
 </html>

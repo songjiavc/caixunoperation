@@ -1,16 +1,14 @@
 package com.richinfo.manager.common.util;
 
-import java.util.Date;
-
 public class BaseBean {
 
 	private String creater;
 	
-	private Date createTime;
+	private String createTime;
 	
 	private String updater;
 	
-	private Date updateTime;
+	private String updateTime;
 	
 	private Character status;
 
@@ -28,20 +26,7 @@ public class BaseBean {
 		this.creater = creater;
 	}
 
-	/**
-	 * @return the createTime
-	 */
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	/**
-	 * @param createTime the createTime to set
-	 */
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
+	
 	/**
 	 * @return the updater
 	 */
@@ -56,19 +41,6 @@ public class BaseBean {
 		this.updater = updater;
 	}
 
-	/**
-	 * @return the updateTime
-	 */
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	/**
-	 * @param updateTime the updateTime to set
-	 */
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
 
 	/**
 	 * @return the status
@@ -83,5 +55,21 @@ public class BaseBean {
 	public void setStatus(Character status) {
 		this.status = status;
 	}
-  
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	
 }

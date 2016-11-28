@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.richinfo.manager.user.dao.RoleMapping">
-	<!--  
-	      ID          VARCHAR2(45) not null,
-  		  CODE        VARCHAR2(45) not null,
-  		  NAME        VARCHAR2(45),
-          PASSWORD    VARCHAR2(60),
-          STATUS      CHAR(1),
-          TELEPHONE   VARCHAR2(11),
-          CREATER     VARCHAR2(45),
-          CREATE_TIME TIMESTAMP(6) 
-    -->
+<mapper namespace="com.richinfo.manager.user.dao.RoleMapper">
 	
 	<resultMap type="com.richinfo.manager.common.util.BaseModel" id="baseModelMap">
 		<result property="creater" column="creater" />  
@@ -22,17 +12,37 @@
 	
 	<resultMap type="com.richinfo.manager.user.model.Role" id="roleMap" extends="baseModelMap">
         <id property="id" column="id" />
-        <result property="code" column="code"/>
-        <result property="name" column="name" />  
-        
-        
+        <result property="roleCode" column="role_code"/>
+        <result property="roleName" column="role_name" />    
     </resultMap>
     
-    <select id="getUserById" parameterType="java.lang.String" resultType="com.richinfo.manager.user.model.User">
-        SELECT 
-        	ID,CODE,NAME,PASSWORD,STATUS,TELEPHONE,CREATER,CREATE_TIME,UPDATER,UPDATE_TIME
-        WHERE 
-        	ID = #{id}
+    
+    
+    <resultMap type="com.richinfo.manager.user.model.Role" id="roleRelaAuth" extends="roleMap">
+    	<collection property="authList" ofType="com.richinfo.manager.user.model.Authority">
+    		<id property="id" column="authId" />
+            <result property="authCode" column="authCode" />
+            <result property="authName" column="authName" />
+    	</collection>
+    </resultMap>
+    
+    <!-- 根据父节点id获取权限列表 -->
+    <select id="getRoleListByWhere" parameterType = "com.richinfo.manager.user.model.Role" resultMap="roleMap">
+    	SELECT 
+    		*
+    	FROM 
+    		T_YWPT_ROLE
+    	<where>
+    	 	<if test="status != null and status != ''">
+                status = #{status},
+            </if>
+    	 	<if test="roleCode != null and roleCode != ''">
+                role_code = #{roleCode},
+            </if>
+            <if test="roleName != null and roleName != ''">
+                role_name = #{roleName},
+            </if>
+    	</where>
     </select>
     
     
@@ -45,19 +55,48 @@
     		ID = #{id}
     </select>
     
+    <select id="getRoleRelaAuthByRoleId" parameterType="java.lang.String" resultMap="roleRelaAuth">
+    	SELECT 
+    		role.id,role.role_code,role.role_name,
+    		auth.id as authId,auth.auth_code as authCode,auth.auth_name as authName
+    	FROM 
+    		T_YWPT_ROLE role LEFT JOIN T_YWPT_AUTH_RELA_ROLE rela ON role.id = rela.role_id 
+    		LEFT JOIN T_YWPT_AUTHORITY auth ON rela.auth_id = auth.id
+    	WHERE 
+    		role.ID = #{id}
+    </select>
+    
     <insert id="insertRole" parameterType="com.richinfo.manager.user.model.Role">
-    	<selectKey keyProperty="id" resultType="String" order="BEFORE">
-        	select sys_guid() from dual
-    	</selectKey>
-    	INSERT INTO T_YWPT_ROLE(id,code,name,status,creater,create_time)
-    	VALUSES(#id,#code,#name,#status,#creater,#create_time)
+    	INSERT INTO T_YWPT_ROLE(id,role_code,role_name,status,creater,create_time)
+    	VALUES(#{id},#{roleCode},#{roleName},#{status},#{creater},#{createTime})
     </insert>
     
     <delete id="deleteRoleById" parameterType="String">
     	DELETE FROM
     		T_YWPT_ROLE
     	WHERE 
-    		ID = #id;
+    		ID = #{id};
     </delete>
+    
+    <!-- 更新权限内容 -->
+    <update id="updateRole" parameterType="com.richinfo.manager.user.model.Role">
+    	UPDATE 
+    		T_YWPT_ROLE 
+    	<set> 
+    		  updater = #{updater},
+              update_time = #{updateTime},
+    		  <if test="roleCode != null and roleCode != ''">
+                 role_code = #{roleCode},
+              </if>
+              <if test="authName != null and authName != ''">
+                 role_name = #{roleName},
+              </if>
+              <if test="status != null and status != ''">
+                 status = #{status},
+              </if>
+         </set>
+         WHERE
+         	ID = #{id}
+    </update>
     
 </mapper>
