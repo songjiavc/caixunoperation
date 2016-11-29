@@ -56,7 +56,7 @@ public interface RoleService {
 	  * @param ids
 	  * @return 
 	  */
-	public ResultBean deleteRoleByIds(String[] ids);
+	public ResultBean deleteRoleByIds(String ids);
 	
 	/** 
 	  * @Description: 角色管理权限内容

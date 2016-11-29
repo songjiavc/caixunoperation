@@ -30,6 +30,15 @@ public interface RoleMapper {
 	void deleteRoleById(Map<String,String> paramMap);
 	
 	/** 
+	  * @Description: 批量通过id删除
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月29日 下午1:29:37 
+	  * 
+	  * @param items 
+	  */
+	@Autowired
+	void batchRemoveByIds(List<String> items);
+	/** 
 	  * @Description: 插入权限内容
 	  * @author songjia@richinfo.cn
 	  * @date 2016年11月25日 上午8:59:56 
@@ -69,7 +78,7 @@ public interface RoleMapper {
 	  * @return 
 	  */
 	@Autowired
-	Role getRoleByid(String roleId);
+	Role getRoleById(String roleId);
 	
 	/** 
 	  * @Description: 通过角色id级联查询权限列表

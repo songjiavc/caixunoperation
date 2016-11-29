@@ -1,6 +1,7 @@
 package com.richinfo.manager.user.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.richinfo.manager.common.bean.ResultBean;
 import com.richinfo.manager.user.bean.RoleBean;
 import com.richinfo.manager.user.dao.RoleMapper;
+import com.richinfo.manager.user.dao.RoleRelaAuthMapper;
 import com.richinfo.manager.user.model.Role;
 import com.richinfo.manager.user.service.RoleService;
 
@@ -24,9 +26,12 @@ public class RoleServiceImpl implements RoleService {
 	@Autowired
 	RoleMapper roleMapper;
 	
+	@Autowired
+	RoleRelaAuthMapper roleRelaAuthMapper;
+	
 	@Override
 	public RoleBean getRoleById(String id) {
-		Role role = roleMapper.getRoleByid(id);
+		Role role = roleMapper.getRoleById(id);
 		RoleBean roleBean = new RoleBean();
 		roleBean.setId(role.getId());
 		roleBean.setRoleCode(role.getRoleCode());
@@ -86,9 +91,19 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public ResultBean deleteRoleByIds(String[] ids) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResultBean deleteRoleByIds(String ids) {
+		//删除角色则将角色关联的权限内容一并删除
+		ResultBean resultBean = new ResultBean();
+		
+		String[] idsArr = ids.split(",");
+		List<String> idList = Arrays.asList(idsArr);
+		//先删除对应关系
+		roleRelaAuthMapper.batchRemoveByRoleIds(idList);
+		//删除实体内容
+		roleMapper.batchRemoveByIds(idList);
+		resultBean.setStatus("success");
+		resultBean.setMessage("删除成功！");
+		return resultBean;
 	}
 
 	@Override

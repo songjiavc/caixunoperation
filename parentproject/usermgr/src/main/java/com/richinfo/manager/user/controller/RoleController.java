@@ -28,6 +28,7 @@ import com.richinfo.manager.user.bean.RoleBean;
 import com.richinfo.manager.user.model.Authority;
 import com.richinfo.manager.user.model.Role;
 import com.richinfo.manager.user.service.AuthorityService;
+import com.richinfo.manager.user.service.RoleRelaAuthService;
 import com.richinfo.manager.user.service.RoleService;
 
 
@@ -50,6 +51,9 @@ public class RoleController extends GlobalExceptionHandler
 	 
 	@Autowired
 	private AuthorityService authService;
+	
+	@Autowired
+	private RoleRelaAuthService roleRelaAuthService;
 	
 	
 	/**
@@ -136,7 +140,7 @@ public class RoleController extends GlobalExceptionHandler
 	 */
 	@RequestMapping(value = "/deleteRole", method = RequestMethod.POST)
 	public @ResponseBody ResultBean deleteRole(
-			@RequestParam(value="ids",required=false) String[] ids,
+			@RequestParam(value="ids",required=false) String ids,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
 		
@@ -149,14 +153,14 @@ public class RoleController extends GlobalExceptionHandler
 	 * @author songjia@richinfo.cn
 	 * @date 2015年10月19日 下午4:29:17
 	  */
-	@RequestMapping(value = "/manageRoleAndauth", method = RequestMethod.POST)
+	@RequestMapping(value = "/manageRoleRelaAuth", method = RequestMethod.POST)
 	public @ResponseBody ResultBean manageRoleAndauth(
 			@RequestParam(value="id",required=false) String id,
-			@RequestParam(value="authes",required=false) String[] authes,
+			@RequestParam(value="authes",required=false) String authes,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
-		
-		return roleService.manageRoleAndAuth(id, authes);
+		//服务层的事物保证
+		return roleRelaAuthService.updateRoleRelaAuth(id, authes);
 	}
  
 

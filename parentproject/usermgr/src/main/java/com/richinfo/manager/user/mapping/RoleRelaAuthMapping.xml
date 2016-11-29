@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richinfo.manager.user.dao.RoleRelaAuthMapper">
+	
+	<delete id="deleteRelaByRoleId" parameterType="java.lang.String">
+		DELETE FROM T_YWPT_AUTH_RELA_ROLE WHERE ROLE_ID = #{roleId}
+	</delete>
+    
+    <delete id="deleteRelaByAuthId" parameterType="java.lang.String">
+		DELETE FROM T_YWPT_AUTH_RELA_ROLE WHERE AUTH_ID = #{authId}
+	</delete>
+	
+	<insert id="insertRela" parameterType="Map">
+		INSERT INTO T_YWPT_AUTH_RELA_ROLE(id,auth_id,role_id) VALUES(#{id},#{authId},#{roleId})
+	</insert>
+    
+    <delete id="batchRemoveByRoleIds" parameterType="java.util.List">
+    	
+    	DELETE FROM T_YWPT_AUTH_RELA_ROLE WHERE ROLE_ID IN
+    	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+    </delete>
+    
+    
+</mapper>

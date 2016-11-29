@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>运维管理平台</title>
+    <title>运营管理平台</title>
 	<%--全局引入的css文件 --%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/material/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/icon.css"/>    
@@ -242,7 +242,7 @@
          <span style="float:right; padding-right:20px;" class="head"> 
          		当前登录用户：<span id="loginuser">admin</span>
          </span>
-        <span style="padding-left:10px; font-size: 36px; float:left;font-family:隶书;">运维管理平台</span>
+        <span style="padding-left:10px; font-size: 36px; float:left;font-family:隶书;">运营管理平台</span>
     </div>
     <div region="south" split="false" style="height: 30px; background: #D2E0F2; ">
         <div class="footer"><center>2015-2016&nbsp;&nbsp;&nbsp;&nbsp;辽宁移动版权所有</center></div>

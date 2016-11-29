@@ -52,7 +52,7 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
-	        $('.manage').linkbutton({text:'权限设置',plain:true,iconCls:'icon-auth'});
+	        $('.manage').linkbutton({text:'权限设置',plain:true,iconCls:'icon-lock'});
 	        
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
@@ -66,47 +66,31 @@ function initDatagrid()
 /**
  * 角色修改
  */
-function updateRole(id,isSystem)
+function updateRole(id)
 {
 	var url = contextPath + '/role/getDetailRole.action';
-	var data1 = new Object();
-	data1.id=id;//权限的id
-	
-	if("1"!=isSystem)
-	{
-		$.ajax({
-			async: false,   //设置为同步获取数据形式
-	        type: "get",
-	        url: url,
-	        data:data1,
-	        dataType: "json",
-	        success: function (data) {
-	        	
-					$('#ffUpdate').form('load',{
-						id:data.id,
-						code:data.code,
-						name:data.name,
-						parentRole:data.parentRole
-//						status:data.status
-					});
-					
-					getParentRole('update',id,data.parentRole);
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: url,
+        data:{
+        	id : id
+        },
+        dataType: "json",
+        success: function (data){
+			$('#ffUpdate').form('load',{
+				
+				id:data.id,
+				code:data.roleCode,
+				name:data.roleName
 			
-	        	
-	        	
-	        },
-	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/menu/error.action";
-	        }
-		});
-		
-		$("#updateRole").dialog('open');
-	}
-	else
-	{
-		$.messager.alert('提示',"当前待修改数据是系统数据不可以进行修改操作!");
-	}
-	
+			});
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/menu/error.action";
+        }
+	});
+	$("#updateRole").dialog('open');
 }
 
 
@@ -117,13 +101,13 @@ function updateRole(id,isSystem)
  */
 function authManage(id,parentRole)
 {
-	//initZnodes(id);
+	initZnodes(id);
 	
 	//初始化已拥有的权限
 	var url = contextPath + '/role/getAuthListOfRole.action';
 	var data1 = new Object();
 	data1.id=id;//权限的id
-	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	var zTree = $.fn.zTree.getZTreeObj("roleRelaAuthTree");
 	var authList;//当前角色拥有权限list
 	
 	//初始化权限树
@@ -134,7 +118,7 @@ function authManage(id,parentRole)
         data:data1,
         dataType: "json",
         success: function (data) {
-        	
+        	debugger;
         	authList = data;//获取权限
         	var node;//ztree树节点变量
         	var flag = false;
@@ -161,36 +145,6 @@ function authManage(id,parentRole)
             window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
-	
-	//超级管理员即根节点是可以设置所有权限的
-	if(null != parentRole&&""!=parentRole)
-		{
-			//设置根节点不可用，直接关联子节点
-			var authId = getOriginAuthId();//树根节点的id是‘1’（将写死的变量 写成静态变量，改为从后台获取，获取方法在MenuController）
-			var node0 = zTree.getNodeByParam("id",authId);
-			
-			/**禁用 或 解禁 某个节点的 checkbox / radio [setting.check.enable = true 时有效]
-			 * zTreeObj.setChkDisabled: Function(node, disabled, inheritParent, inheritChildren)
-			 */
-			//设置父级角色的子级权限可操作选择
-			var parentauthlist = new Object();
-			parentauthlist = getParentAuth(parentRole);
-			zTree.setChkDisabled(node0, true,false,true);
-			var authparent;
-			var nodeparent;
-			for(var i=0;i<parentauthlist.length;i++)
-			{
-				authparent = parentauthlist[i];
-				nodeparent = zTree.getNodeByParam("id",authparent.id);
-				if(null != nodeparent)/*为了避免当上级角色拥有的权限已经被设置为不启用状态或已删除时而关联表的数据还在，
-										则此时是获取不到树节点的，因为当前树不会加载不启用状态的权限和删除的权限*/
-					{
-						zTree.setChkDisabled(nodeparent, false);
-					}
-				
-			}
-			
-		}
 	
 	$('#w').dialog('open');//打开弹框
 }
@@ -261,29 +215,25 @@ function roleManage()
 {
 	var ztreeId = $("#ztreeId").val();//获取当前设置权限的角色
 	
-	var url = contextPath + '/role/manageRoleAndauth.action';
+	var url = contextPath + '/role/manageRoleRelaAuth.action';
 	var data1 = new Object();
 	
 	var codearr = new Array();
-	 var treeObj=$.fn.zTree.getZTreeObj("treeDemo"),
-     nodes=treeObj.getCheckedNodes(true),
-     v="";
-	
-	
+	var treeObj=$.fn.zTree.getZTreeObj("roleRelaAuthTree"),
+	nodes=treeObj.getCheckedNodes(true),
+	v="";
 	for(var i=0; i<nodes.length; i++)
 	{
 		codearr.push(nodes[i].id);//code
 	}
-	
-	
-	data1.id = ztreeId;
-	data1.authes = codearr.toString();
-	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "post",
         url: url,
-        data:data1,
+        data:{
+        	id : ztreeId,
+        	authes : codearr.toString()
+        },
         dataType: "json",
         success: function (data) {
         	initDatagrid();
@@ -412,51 +362,32 @@ function submitUpdaterole()
  * 删除角色数据
  * @param id
  */
-function deleteRole(id,isSystem)
+function deleteRole(id)
 {
 	var url = contextPath + '/role/deleteRole.action';
-	var data1 = new Object();
 	
-	if("1"!=isSystem)
-	{
-		var codearr = [];
-		codearr.push(id);
-		
-		data1.ids=codearr.toString();
-		
-		var haveChildFlag = checkHaveChildRole(id);//checkHaveChildRole(code);//判断当前待删除角色是否拥有子级角色，若拥有子级角色则不可以删除
-		
-		if(haveChildFlag)
-			{
-				$.messager.alert('提示', "当前待删除角色有子级角色,不可以进行删除操作!");
-			}
-		else
-			{
-				$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
-			        if (r) {  
-				        	$.ajax({
-				        		async: false,   //设置为同步获取数据形式
-				                type: "post",
-				                url: url,
-				                data:data1,
-				                dataType: "json",
-				                success: function (data) {
-				                	initDatagrid();
-				                	$.messager.alert('提示', data.message);
-				                },
-				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/menu/error.action";
-				                }
-				           });
-				        	
-			        }  
-			    });  
-			}
-	}
-	else
-	{
-		$.messager.alert('提示',"当前待删除数据是系统数据不可以进行删除操作!");
-	}
+	$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
+        if (r) {  
+	        	$.ajax({
+	        		async: false,   //设置为同步获取数据形式
+	                type: "post",
+	                url: url,
+	                data : {
+	                	ids : id
+	                },
+	                dataType: "json",
+	                success: function (data) {
+	                	initDatagrid();
+	                	$.messager.alert('提示', data.message);
+	                },
+	                error: function (XMLHttpRequest, textStatus, errorThrown) {
+	                    window.parent.location.href = contextPath + "/menu/error.action";
+	                }
+	           });
+	        	
+        }  
+    });  
+	
 	
 }
 
@@ -498,18 +429,16 @@ function checkHaveChildRole(id)
 function checkHaveChildAuth(id)
 {
 	var flag = false;//当前值可用，不存在
-	var data = new Object();
-	
-	data.parentAuth = id;
-	data.status = "1";
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "post",
-        url: contextPath+'/menu/checkValue.action',
-        data:data,
+        url: contextPath+'/authority/checkChildNum.action',
+        data:{
+        	parentAuthId : id
+        },
         dataType: "json",
         success: function (data) {
-        	if(data.exist)//若data.isExist==true则当前权限下有子级权限
+        	if(data.entity > 0)//若data.isExist==true则当前权限下有子级权限
         		{
         			flag = true;
         		}
@@ -575,29 +504,18 @@ function deleteRoleList()
 		//判断当前角色是否有子级角色
 		var haveChildFlag = checkHaveChildRole(rows[i].id);
 		
-		var issystem = rows[i].isSystem;//当前数据的是否为系统数据的标志位
-		
 		if(haveChildFlag)
 			{
 				$.messager.alert('提示', "当前待删除角色:'"+rows[i].name+"'拥有子级角色,不可以进行删除操作!");
 				deleteFlag = false;
 				break;
 			}
-		else
-			if("1"==issystem)
-				{
-					$.messager.alert('提示', "当前待删除角色:'"+rows[i].authName+"'是系统数据,不可以进行删除操作!");
-					deleteFlag = false;
-					break;
-				}
 	}
 	
 	if(deleteFlag)//选中的待删除权限中没有拥有子级权限的权限时可以进行删除操作
 		{
 			if(codearr.length>0)
 			{
-				data1.ids=codearr.toString();//将id数组转换为String传递到后台
-				
 				$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
 			        if (r) {  
 			        	
@@ -605,7 +523,9 @@ function deleteRoleList()
 				        		async: false,   //设置为同步获取数据形式
 				                type: "post",
 				                url: url,
-				                data:data1,
+				                data:{
+				                	ids : codearr.toString()
+				                },
 				                dataType: "json",
 				                success: function (data) {
 				                	initDatagrid();
@@ -691,7 +611,7 @@ function initZnodes(id)
 		async: false,   //设置为同步获取数据形式
         type: "post",
         data:data,
-        url: contextPath+'/role/getTreedata.action',
+        url: contextPath+'/authority/getTreedata.action',
         dataType: "json",
         success: function (data) {
         	setting = {
@@ -718,7 +638,7 @@ function initZnodes(id)
         }
    });
 	
-	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	$.fn.zTree.init($("#roleRelaAuthTree"), setting, zNodes);
 }	
 
 

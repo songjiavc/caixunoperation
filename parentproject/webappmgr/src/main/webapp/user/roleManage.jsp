@@ -75,7 +75,7 @@
   
   
   <!-- 权限设置弹框 -->
-  <div id="w" class="easyui-dialog" title="权限设置" style="width:400px;height:300px;padding:10px;display:none;"
+  <div id="w" class="easyui-dialog" closed="true" title="权限设置" style="width:400px;height:500px;padding:10px;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -95,12 +95,12 @@
             ">
         <div class="zTreeDemoBackground left" style="float:left;width: 200px;">
         	<input type="hidden" id="ztreeId"/>
-			<ul id="treeDemo" class="ztree"></ul>
+			<ul id="roleRelaAuthTree" class="ztree"></ul>
 		</div>
     </div>
     
     <!-- 添加角色弹框 -->
-  <div id="addRole" class="easyui-dialog" title="添加角色" style="width:400px;height:300px;padding:10px;display:none;"
+  <div id="addRole" class="easyui-dialog" closed="true" title="添加角色" style="width:400px;height:220px;padding:10px;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -142,7 +142,7 @@
 	      </form>
     </div>
      <!-- 修改角色弹框 -->
-     <div id="updateRole" class="easyui-dialog"  title="修改角色" style="width:400px;height:300px;padding:10px;display:none;"
+     <div id="updateRole" class="easyui-dialog" closed="true" title="修改角色" style="width:400px;height:220px;padding:10px;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -154,10 +154,9 @@
                     }
                 },{
                     text:'取消',
-                    iconCls:'icon-ok',
+                    iconCls:'icon-cancel',
                     handler:function(){
                         $('#updateRole').dialog('close');
-                        $('#parentRoleUname').val('');
                     }
                 }]
             ">
@@ -165,7 +164,7 @@
 	         <div class="ftitle">
 	            <label for="name">角色编码:</label>
 	             <input type="hidden" name="id" id="idU"/>
-	            <input class="easyui-validatebox commonInput" type="text" id="codeU" name="code" data-options="required:true"
+	             <input class="easyui-validatebox commonInput" type="text" id="codeU" name="code" data-options="required:true"
 	             validType="checkCodes['#codeU','idU']" missingMessage="角色编码不可以为空" ></input>
 	        </div>
 	        <div class="ftitle">

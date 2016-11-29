@@ -52,7 +52,7 @@
     	FROM 
     		T_YWPT_ROLE
     	WHERE 
-    		ID = #{id}
+    		ID = #{roleId}
     </select>
     
     <select id="getRoleRelaAuthByRoleId" parameterType="java.lang.String" resultMap="roleRelaAuth">
@@ -88,7 +88,7 @@
     		  <if test="roleCode != null and roleCode != ''">
                  role_code = #{roleCode},
               </if>
-              <if test="authName != null and authName != ''">
+              <if test="roleName != null and roleName != ''">
                  role_name = #{roleName},
               </if>
               <if test="status != null and status != ''">
@@ -98,5 +98,18 @@
          WHERE
          	ID = #{id}
     </update>
+    
+    
+    <delete id="batchRemoveByIds" parameterType="java.util.List">
+
+		DELETE FROM T_YWPT_ROLE WHERE ID in 
+		
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+		
+			#{item}
+		
+		</foreach>
+
+	</delete>
     
 </mapper>
