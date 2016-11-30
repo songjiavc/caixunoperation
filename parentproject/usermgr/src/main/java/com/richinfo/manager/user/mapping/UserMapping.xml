@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.richinfo.manager.user.dao.UserMapping">
+<mapper namespace="com.richinfo.manager.user.dao.UserMapper">
 	
 	<resultMap type="com.richinfo.manager.common.util.BaseModel" id="baseModelMap">
 		<result property="creater" column="creater" />  
@@ -12,39 +12,133 @@
 	
 	<resultMap type="com.richinfo.manager.user.model.User" id="userMap" extends="baseModelMap">
         <id property="id" column="id" />
-        <result property="code" column="code"/>
-        <result property="name" column="name" />  
-        <result property="password" column="password" />  
-        <result property="createTime" column="createtime" />
+        <result property="userCode" column="user_code"/>
+        <result property="userName" column="user_name"/>
+        <result property="telephone" column="telephone"/>
     </resultMap>
     
-    <select id="getUserById" parameterType="java.lang.String" resultMap="userMap">
-        SELECT 
-        	ID,CODE,NAME,PASSWORD,STATUS,TELEPHONE,CREATER,CREATE_TIME,UPDATER,UPDATE_TIME
-        WHERE 
-        	ID = #{id}
+    
+    
+    <resultMap type="com.richinfo.manager.user.model.User" id="userRelaRole" extends="userMap">
+    	<association property="role" javaType="com.richinfo.manager.user.model.Role">
+    		<id property="id" column="roleId" />
+            <result property="roleCode" column="roleCode" />
+            <result property="roleName" column="roleName" />
+    	</association>
+    </resultMap>
+    
+    <!-- 根据父节点id获取权限列表 -->
+    <select id="getUserListByWhere" parameterType = "com.richinfo.manager.user.model.User" resultMap="userRelaRole">
+
+	    	SELECT 
+	    		ur.*,
+	    		role.id as roleId,role.role_code as roleCode,role.role_name as roleName
+	    	FROM 
+	    		T_YWPT_USER ur LEFT JOIN T_YWPT_USER_RELA_ROLE rela ON ur.id = rela.user_id 
+	    		LEFT JOIN T_YWPT_ROLE role ON rela.role_id = role.id
+	    	<where>
+	    	 	<if test="status != null and status != ''">
+	                ur.status = #{status}
+	            </if>
+	    	 	<if test="userCode != null and userCode != ''">
+	                and ur.user_code = #{userCode}
+	            </if>
+	            <if test="userName != null and userName != ''">
+	                and ur.user_name = #{userName}
+	            </if>
+	            <if test="telephone != null and telephone != ''">
+	                and ur.telephone = #{telephone}
+	            </if>
+	    	</where>
+
     </select>
     
-    <select id="getRoleById" parameterType="java.lang.String" resultType="com.richinfo.manager.user.model.Role">
+    <select id="getTotalByWhere" parameterType = "com.richinfo.manager.user.model.User" resultType="java.lang.Integer">
+    	SELECT COUNT(0) FROM T_YWPT_USER ur
+    	<where>
+    	 	<if test="status != null and status != ''">
+                ur.status = #{status}
+            </if>
+    	 	<if test="userCode != null and userCode != ''">
+                and ur.user_code = #{userCode}
+            </if>
+            <if test="userName != null and userName != ''">
+                and ur.user_name = #{userName}
+            </if>
+            <if test="telephone != null and telephone != ''">
+                and ur.telephone = #{telephone}
+            </if>
+    	</where>
+    </select>
+    
+    
+    <select id="getUserById" parameterType="java.lang.String" resultMap="userMap">
     	SELECT
-    		ID,CODE,NAME FROM T_YWPT_ROLE
+    		* 
+    	FROM 
+    		T_YWPT_USER
     	WHERE 
-    		ID = #{id}
+    		ID = #{userId}
+    </select>
+    
+    <select id="getUserRelaRoleByUserId" parameterType="java.lang.String" resultMap="userRelaRole">
+    	SELECT 
+    		user.id,user.user_code,user.user_name,user.telephone,
+    		role.id as roleId,role.role_code as roleCode,role.role_name as roleName
+    	FROM 
+    		T_YWPT_USER user LEFT JOIN T_YWPT_USER_RELA_ROLE rela ON user.id = rela.user_id 
+    		LEFT JOIN T_YWPT_ROLE role ON rela.role_id = role.id
+    	WHERE 
+    		user.ID = #{id}
     </select>
     
     <insert id="insertUser" parameterType="com.richinfo.manager.user.model.User">
-    	<selectKey keyProperty="id" resultType="String" order="BEFORE">
-        	select sys_guid() from dual
-    	</selectKey>
-    	INSERT INTO T_YWPT_ROLE(id,code,name,password,telephone,status,creater,create_time)
-    	VALUSES(#id,#code,#name,#password,#status,#creater,#create_time)
+    	INSERT INTO T_YWPT_USER(id,user_code,user_name,status,creater,create_time)
+    	VALUES(#{id},#{userCode},#{userName},#{status},#{creater},#{createTime})
     </insert>
     
-    <delete id="deleteUserById" parameterType="String">
+    <delete id="deleteRoleById" parameterType="String">
     	DELETE FROM
     		T_YWPT_USER
     	WHERE 
-    		ID = #id;
+    		ID = #{id};
     </delete>
+    
+    <!-- 更新权限内容 -->
+    <update id="updateUser" parameterType="com.richinfo.manager.user.model.User">
+    	UPDATE 
+    		T_YWPT_USER 
+    	<set> 
+    		  updater = #{updater},
+              update_time = #{updateTime},
+    		  <if test="userCode != null and userCode != ''">
+                 user_code = #{userCode},
+              </if>
+              <if test="userName != null and userName != ''">
+                 user_name = #{userName},
+              </if>
+              <if test="telephone != null and telephone != ''">
+                 telephone = #{telephone},
+              </if>
+              <if test="status != null and status != ''">
+                 status = #{status},
+              </if>
+         </set>
+         WHERE
+         	ID = #{id}
+    </update>
+    
+    
+    <delete id="batchRemoveByIds" parameterType="java.util.List">
+
+		DELETE FROM T_YWPT_USER WHERE ID in 
+		
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+		
+			#{item}
+		
+		</foreach>
+
+	</delete>
     
 </mapper>

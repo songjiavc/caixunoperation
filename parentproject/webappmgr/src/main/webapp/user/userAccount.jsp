@@ -5,10 +5,23 @@
   	<head>
     
     <title>测试页面</title>
-	  
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/material/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/easyui/themes/icon.css"/>    
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/default.css"/>
+    <link href="<%=request.getContextPath() %>/common/ztree/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
+   
+    
+    <%--全局引入的js文件 --%>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/jquery.easyui.min.js"></script>    
+    <script type="text/javascript" src="<%=request.getContextPath() %>/common/easyui/locale/easyui-lang-zh_CN.js"></script>
+    
     <script type="text/javascript" src="<%=request.getContextPath() %>/user/js/useraccount.js"></script>  
     <script type="text/javascript">
-	    var toolbar = [{
+   		
+    	var contextPath = '<%=request.getContextPath() %>';
+    	
+    	var toolbar = [{
 	  	    text:'添加',
 	  	    iconCls:'icon-add',
 	  	    handler:function(){
@@ -55,12 +68,43 @@
 	  		#main-layout{     min-width:1050px;     min-height:240px;     overflow:hidden; }
 	  	</style>
 </head>
-<body>
-	
-	<table id="accountDataGrid" class="easyui-datagrid" title="用户列表" 
-			data-options="toolbar:toolbar" ></table>
-	    <!-- 添加权限弹框 -->
-  	<div id="addAccount" class="easyui-dialog"  title="添加用户" style="width:500px;height:400px;padding:10px;top:40px;"
+<body class="easyui-layout">
+	<div data-options="region:'north',title:'查询条件',split:true" style="height:100px;">
+	        <table style="border: none;margin:10 10 10 20">
+		    	<tr >
+		    		<td colspan="1" >帐号：</td>
+		    		<td colspan="2">
+		    			<input id="searchFormNumber" class="input_border"  type="text" name="searchFormNumber"  />  
+		    		</td>
+		    		<td colspan="1">姓名：</td>
+		    		<td colspan="2">
+		    			<input id="searchFormName" class="input_border"  type="text" name="searchFormName"  />  
+		    		</td>
+		    		<td colspan="1">电话：</td>
+		    		<td colspan="2">
+		    			<input id="searchFormTelephone" class="input_border"  type="text" name="searchFormTelephone"  />  
+		    		</td>
+		    		<td colspan="1">状态：</td>
+		    		<td colspan="2">
+			    		<select id="searchFormStatus" class="easyui-combobox" name="searchFormStatus" style="width:100px;">
+						    <option value="1">正常</option>
+						    <option value="2">锁定</option>
+						    <option value="3">注销</option>
+						</select>
+					</td>
+		    		<td  colspan="2">
+		    			<a class="easyui-linkbutton" onclick="initDatagrid()" data-options="iconCls:'icon-search'">查询</a>
+		    			<a class="easyui-linkbutton" onclick="reset()" data-options="iconCls:'icon-redo'">重置</a>
+		    		</td>
+	    		</tr>
+	    	</table>	
+	</div>
+	<div data-options="region:'center'" style="background:#eee;">
+		<table id="accountDataGrid" class="easyui-datagrid" title="用户列表" 
+				data-options="toolbar:toolbar" ></table>
+	</div>
+	<!-- 添加权限弹框 -->
+  	<div id="addAccount" class="easyui-dialog" closed="true" title="添加用户" style="width:500px;height:400px;padding:10px;top:40px;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -101,28 +145,8 @@
 	            <label for="confirmPassword" >确认密码:</label>
 	            <input class="easyui-validatebox textbox" type="password" name ="confirmPassword"  data-options="required:true" validType="equalTo['#password']" invalidMessage="两次输入密码不匹配"></input>
 	        </div>
-	        <div class="ftitle">
-	            <label for="lotteryTypeA" >用户类型:</label>
-		    			<select class="easyui-combobox" id="lotteryTypeA" name="lotteryType" style="width:200px;">
-							<option value="0" selected>全部</option>
-							<option value="1" >体彩</option>
-							<option value="2">福彩</option>
-						</select>
-	        </div>
-	         <div class="ftitle">
-	            <label for="subject">用户地域:</label>
-	            <div style="">
-	           		<!-- <label for="privinceA">省:</label> -->
-		            <select class="easyui-combobox " id="privinceA" name="province"  
-		          	  data-options="editable:false" style="width:100px;" >
-					</select>
-					<!-- <label for="cityA">市:</label> -->
-					<select class="easyui-combobox " id="cityA" name="city"  
-		          	  data-options="editable:false" style="width:100px;" >
-					</select>
-	            </div>
-	        </div>
-	       	 <div class="ftitle">
+	       
+	       	<div class="ftitle">
 	            <label for="status">是否启用:</label>
 	            <div style="float:right;margin-right: 40%;">
 		            <input class="easyui-validatebox" type="radio" name="status"  value="1" checked>是</input>
@@ -132,7 +156,7 @@
           </form>
      </div>  
      <!-- 修改权限弹框 -->
-    <div id="updateAccount" class="easyui-dialog"  title="修改用户" style="width:500px;height:400px;padding:10px;"
+    <div id="updateAccount" class="easyui-dialog" closed="true" title="修改用户" style="width:500px;height:400px;padding:10px;"
             data-options=" 
             modal:true,
                 iconCls: 'icon-save',
@@ -174,27 +198,7 @@
 	            <label for="confirmPassword" >确认密码:</label>
 	            <input class="easyui-validatebox textbox" type="password" name ="confirmPassword"  data-options="required:true"></input>
 	        </div>
-	        <div class="ftitle">
-	            <label for="lotteryTypeU" >用户类型:</label>
-		    			<select class="easyui-combobox" id="lotteryTypeU" name="lotteryType" style="width:200px;">
-							<option value="0">全部</option>
-							<option value="1" >体彩</option>
-							<option value="2">福彩</option>
-						</select>
-	        </div>
-	          <div class="ftitle">
-	            <label for="subject">用户地域:</label>
-	            <div style="">
-	           		<!-- <label for="privinceA">省:</label> -->
-		            <select class="easyui-combobox " id="privinceU" name="province"  
-		          	  data-options="editable:false" style="width:100px;" >
-					</select>
-					<!-- <label for="cityA">市:</label> -->
-					<select class="easyui-combobox " id="cityU" name="city"  
-		          	  data-options="editable:false" style="width:100px;" >
-					</select>
-	            </div>
-	        </div>
+	        
           	<div class="ftitle">
 	            <label for="status">是否启用:</label>
 	            <div style="float:right;margin-right: 40%;">
@@ -206,7 +210,7 @@
        </div>
        
        
-    <div id="selectRoleDiv" class="easyui-dialog"   title="角色选择" style="width:800px;height:600px;padding:0px;border:0;top:40px;"
+    <div id="selectRoleDiv" class="easyui-dialog"  closed="true" title="角色选择" style="width:800px;height:500px;padding:0px;border:0;top:40px;"
             data-options=" 
    				 modal:true,
                 iconCls: 'icon-search',
@@ -228,12 +232,12 @@
                 }]"
                >
     	<div class="easyui-layout" style="overflow-y: hidden;height:100%;padding:0;" >
-    	 	<div region="north" style="height:70%;">
+    	 	<div region="north" style="height:80%;">
     	 		<input type="hidden" id = "userId" ></input>
-    	 		<table id="selectRoleGrid" class="easyui-datagrid" style="width:98%;height:98%;border:0;" title="待选列表" ></table>
+    	 		<table id="selectRoleGrid" class="easyui-datagrid" style="width:97.5%;height:97%;border:0;" title="待选列表" ></table>
     	 	</div>
-    	 	<div region="center" style="height:30%;padding:0;">
-    	 		<table id="selectedRoleGrid" class="easyui-datagrid" style="width:98%;height:98%;border:0;" title="已选列表" ></table>
+    	 	<div region="center" style="height:20%;padding:0;">
+    	 		<table id="selectedRoleGrid" class="easyui-datagrid" style="width:97.5%;height:97%;border:0;" title="已选列表" ></table>
     	 	</div>
     	</div>
  	</div>  

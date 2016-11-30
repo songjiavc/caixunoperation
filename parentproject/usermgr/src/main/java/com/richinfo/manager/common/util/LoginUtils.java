@@ -22,7 +22,7 @@ public class LoginUtils {
 		
 		 User userBean = (User)session.getAttribute("currentUser");
 		 
-		 userId = userBean.getCode();
+		 userId = userBean.getUserCode();
 		 
 		 return userId;
 	 }
@@ -41,7 +41,7 @@ public class LoginUtils {
 		
 		 User userBean = (User)session.getAttribute("userBean");
 		 
-		 name = userBean.getName();
+		 name = userBean.getUserName();
 		 
 		 return name;
 	 }

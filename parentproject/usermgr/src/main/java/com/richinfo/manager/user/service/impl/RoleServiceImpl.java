@@ -107,12 +107,6 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public ResultBean manageRoleAndAuth(String id, String[] auths) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Role getRoleRelaAuthByRoleId(String id) {
 		return roleMapper.getRoleRelaAuthByRoleId(id);
 	}

@@ -1,17 +1,9 @@
-package com.richinfo.manager.user.model;
+package com.richinfo.manager.user.bean;
 
-import com.richinfo.manager.common.util.BaseModel;
+import com.richinfo.manager.common.util.BaseBean;
 
-
-/** 
-  * @ClassName: User 
-  * @Description: mybaitis 对应实体文件
-  * @author songjia@richinfo.cn
-  * @date 2016年11月18日 下午2:32:45 
-  *  
-  */
-public class User extends BaseModel{
-	
+public class UserBean extends BaseBean
+{
 	private String id;
 	
 	private String userCode;
@@ -22,7 +14,7 @@ public class User extends BaseModel{
 	
 	private String telephone;
 	
-	private Role role;
+	private String roleName;
 
 	public String getId() {
 		return id;
@@ -64,12 +56,14 @@ public class User extends BaseModel{
 		this.telephone = telephone;
 	}
 
-	public Role getRole() {
-		return role;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
+	
+	
 }

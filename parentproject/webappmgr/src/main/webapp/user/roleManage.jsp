@@ -123,12 +123,12 @@
 	        <div class="ftitle">
 	            <label for="name">角色编码:</label>
 	            <input type="hidden" name="id" id="idA"/>
-	            <input class="easyui-validatebox commonInput" type="text" id="codeA" name="code" data-options="required:true"
+	            <input class="easyui-validatebox textbox" type="text" id="codeA" name="code" data-options="required:true"
 	             validType="checkCodes['#codeA','idA']" missingMessage="角色编码不可以为空" ></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="email">角色名称:</label>
-	            <input class="easyui-validatebox commonInput" type="text" id="nameA" name="name" data-options="required:true"
+	            <input class="easyui-validatebox textbox" type="text" id="nameA" name="name" data-options="required:true"
 	             validType="checkAname['#nameA','idA']" missingMessage="角色名称不可以为空" ></input>
 	        </div>
 	  
@@ -164,12 +164,12 @@
 	         <div class="ftitle">
 	            <label for="name">角色编码:</label>
 	             <input type="hidden" name="id" id="idU"/>
-	             <input class="easyui-validatebox commonInput" type="text" id="codeU" name="code" data-options="required:true"
+	             <input class="easyui-validatebox textbox" type="text" id="codeU" name="code" data-options="required:true"
 	             validType="checkCodes['#codeU','idU']" missingMessage="角色编码不可以为空" ></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="email">角色名称:</label>
-	            <input class="easyui-validatebox commonInput" type="text" id="nameU" name="name" data-options="required:true"
+	            <input class="easyui-validatebox textbox" type="text" id="nameU" name="name" data-options="required:true"
 	             validType="checkAname['#nameU','idU']" missingMessage="角色名称不可以为空" ></input>
 	        </div>
 	         <!-- <div class="ftitle">

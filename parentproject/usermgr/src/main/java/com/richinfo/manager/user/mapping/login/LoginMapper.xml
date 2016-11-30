@@ -3,16 +3,16 @@
 <mapper namespace="com.richinfo.manager.user.dao.login.LoginMapper">
 	<resultMap id="BaseResultMap" type="com.richinfo.manager.user.model.User">
 		<result column="ID" property="id" jdbcType="VARCHAR" />
-		<result column="CODE" property="code" jdbcType="VARCHAR" />
-		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="USER_CODE" property="userCode" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="getLoginUser" parameterType="map" resultMap="BaseResultMap">
 		SELECT 
-			id,code,name 
+			id,user_code,user_name 
 		FROM 
 			T_YWPT_USER
 		WHERE 
-			code = #{code}
+			user_code = #{code}
 		AND	
 			password = #{password}
 	</select>

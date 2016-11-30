@@ -3,7 +3,6 @@ package com.richinfo.manager.user.service;
 import java.util.List;
 
 import com.richinfo.manager.common.bean.ResultBean;
-import com.richinfo.manager.user.bean.AuthorityBean;
 import com.richinfo.manager.user.bean.RoleBean;
 import com.richinfo.manager.user.model.Role;
 
@@ -41,13 +40,10 @@ public interface RoleService {
 	  * @Description: 添加或者删除
 	  * @author songjia@richinfo.cn
 	  * @date 2016年11月21日 下午1:25:26 
-	  * 
 	  * @param authority
 	  * @return 
 	  */
 	public ResultBean insertOrUpdateRole(RoleBean roleBean);
-	
-
 	
 	/** 
 	  * @Description: 根据角色ids删除角色，注意与角色关联的用户和权限注意提示内容
@@ -58,13 +54,4 @@ public interface RoleService {
 	  */
 	public ResultBean deleteRoleByIds(String ids);
 	
-	/** 
-	  * @Description: 角色管理权限内容
-	  * @author songjia@richinfo.cn
-	  * @date 2016年11月28日 上午11:01:43 
-	  * @param id
-	  * @param auths
-	  * @return 
-	  */
-	public ResultBean manageRoleAndAuth(String id,String[] auths);
 }

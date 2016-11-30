@@ -25,11 +25,11 @@ import com.richinfo.manager.common.exception.GlobalExceptionHandler;
 import com.richinfo.manager.common.util.DateUtil;
 import com.richinfo.manager.common.util.LoginUtils;
 import com.richinfo.manager.user.bean.RoleBean;
-import com.richinfo.manager.user.model.Authority;
+import com.richinfo.manager.user.bean.UserBean;
 import com.richinfo.manager.user.model.Role;
-import com.richinfo.manager.user.service.AuthorityService;
-import com.richinfo.manager.user.service.RoleRelaAuthService;
-import com.richinfo.manager.user.service.RoleService;
+import com.richinfo.manager.user.model.User;
+import com.richinfo.manager.user.service.UserRelaRoleService;
+import com.richinfo.manager.user.service.UserService;
 
 
 /**
@@ -41,16 +41,16 @@ import com.richinfo.manager.user.service.RoleService;
   *
   */
 @Controller
-@RequestMapping("/role")
-public class RoleController extends GlobalExceptionHandler
+@RequestMapping("/user")
+public class UserController extends GlobalExceptionHandler
 {
-	private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
-	private RoleService roleService;
+	private UserService userService;
 	
 	@Autowired
-	private RoleRelaAuthService roleRelaAuthService;
+	private UserRelaRoleService userRelaRoleService;
 	
 	
 	/**
@@ -60,10 +60,10 @@ public class RoleController extends GlobalExceptionHandler
 	 * @desc  初始化权限页面
 	 * @return
 	 */
-	@RequestMapping(value = "/initRole.action")
+	@RequestMapping(value = "/initUser.action")
 	public String initRole(HttpServletRequest request,ModelMap model,HttpSession httpSession) {
  		///authority/initAuthority.action
- 		return "user/roleManage";
+ 		return "user/userAccount";
 	}
 	
 	/** 
@@ -76,26 +76,26 @@ public class RoleController extends GlobalExceptionHandler
 	  * @return
 	  * @throws Exception 
 	  */
-	@RequestMapping(value = "/getDetailRole", method = RequestMethod.GET)
-	public @ResponseBody RoleBean getDetailRole(
+	@RequestMapping(value = "/getDetailUser", method = RequestMethod.GET)
+	public @ResponseBody UserBean getDetailUser(
 			@RequestParam(value="id",required=true) String id,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
-		return roleService.getRoleById(id);
+		return userService.getUserById(id);
 	}
 	 
 	/**
-	  * @Description:获取指定角色对应的权限列表数据
+	  * @Description:获取用户所属角色列表
 	  * @author songjia@richinfo.cn
 	  * @date 2016年11月24日 上午9:56:29
 	  */
-	 @RequestMapping(value = "/getAuthListOfRole", method = RequestMethod.GET)
-	 public @ResponseBody List<Authority> getAuthListOfRole(
+	 @RequestMapping(value = "/getRoleOfUserId", method = RequestMethod.GET)
+	 public @ResponseBody Role getAuthListOfRole(
 			@RequestParam(value="id",required=true) String id,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
-		 Role role = roleService.getRoleRelaAuthByRoleId(id);
-		 return role.getAuthList();
+		 User user = userService.getUserRelaRoleByUserId(id);
+		 return user.getRole();
 	}
 	 
 	
@@ -115,18 +115,22 @@ public class RoleController extends GlobalExceptionHandler
 		    @RequestParam(value="id",required=false) String id,
 			@RequestParam(value="code",required=false) String code,
 			@RequestParam(value="name",required=false) String name,
+			@RequestParam(value="telephone",required=false) String telephone,
+			@RequestParam(value="password",required=false) String password,
 			ModelMap model,HttpSession httpSession)
 	{
-		RoleBean roleBean = new RoleBean();
-		roleBean.setId(id);
-		roleBean.setRoleCode(code);
-		roleBean.setRoleName(name);
+		UserBean userBean = new UserBean();
+		userBean.setId(id);
+		userBean.setUserCode(code);
+		userBean.setUserName(name);
+		userBean.setPassword(password);
+		userBean.setTelephone(telephone);
 		if(StringUtils.isEmpty(id)){
-			roleBean.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+			userBean.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
 		}else{
-			roleBean.setUpdater(LoginUtils.getAuthenticatedUserCode(httpSession));
+			userBean.setUpdater(LoginUtils.getAuthenticatedUserCode(httpSession));
 		}
-		return roleService.insertOrUpdateRole(roleBean);
+		return userService.insertOrUpdateUser(userBean);
 	}
 	 
 	/**
@@ -135,69 +139,73 @@ public class RoleController extends GlobalExceptionHandler
 	 * @author songjia@richinfo.cn
 	 * @date 2015年10月19日 下午2:30:04
 	 */
-	@RequestMapping(value = "/deleteRole", method = RequestMethod.POST)
-	public @ResponseBody ResultBean deleteRole(
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+	public @ResponseBody ResultBean deleteUser(
 			@RequestParam(value="ids",required=false) String ids,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
-		
-		return roleService.deleteRoleByIds(ids);
+		return userService.deleteUserByIds(ids);
 	}
 	 
 	 /**
 	  * 
-	 * @Description: 权限角色关联关联（添加删除）
+	 * @Description: 用户角色关联关联（添加删除）
 	 * @author songjia@richinfo.cn
 	 * @date 2015年10月19日 下午4:29:17
 	  */
-	@RequestMapping(value = "/manageRoleRelaAuth", method = RequestMethod.POST)
+	@RequestMapping(value = "/manageUserRelaRole", method = RequestMethod.POST)
 	public @ResponseBody ResultBean manageRoleAndauth(
-			@RequestParam(value="id",required=false) String id,
-			@RequestParam(value="authes",required=false) String authes,
+			@RequestParam(value="userId",required=false) String userId,
+			@RequestParam(value="role",required=false) String roles,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
 		//服务层的事物保证
-		return roleRelaAuthService.updateRoleRelaAuth(id, authes);
+		return userRelaRoleService.updateUserRelaRole(userId, roles);
 	}
  
 
-	@RequestMapping(value = "/getRoleList", method = RequestMethod.GET)
-	public  @ResponseBody ResultBeanDataList<RoleBean> getRoleList(
+	@RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+	public  @ResponseBody ResultBeanDataList<UserBean> getUserList(
 			@RequestParam(value="page",required=false) int page,
 			@RequestParam(value="rows",required=false) int rows,
 			@RequestParam(value="status",required=false) Character status,
-			@RequestParam(value="roleCode",required=false) String roleCode,
-			@RequestParam(value="roleName",required=false) String roleName,
-//				@RequestParam(value="status",required=false) String status,
+			@RequestParam(value="userCode",required=false) String userCode,
+			@RequestParam(value="userName",required=false) String userName,
+			@RequestParam(value="telephone",required=false) String telephone,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
-		RoleBean roleBean = new RoleBean();
+		UserBean userBean = new UserBean();
 		if(status != null){
-			roleBean.setStatus(status);
+			userBean.setStatus(status);
 		}
-		if(!StringUtils.isEmpty(roleCode)){
-			roleBean.setRoleCode(roleCode);
+		if(!StringUtils.isEmpty(userCode)){
+			userBean.setUserCode(userCode);
 		}
-		if(!StringUtils.isEmpty(roleName)){
-			roleBean.setRoleName(roleName);
+		if(!StringUtils.isEmpty(userName)){
+			userBean.setUserName(userName);
 		}
-		ResultBeanDataList<RoleBean> rtnDataList = new ResultBeanDataList<RoleBean>();
+		ResultBeanDataList<UserBean> rtnDataList = new ResultBeanDataList<UserBean>();
 		PageHelper.startPage(page, rows); //
-		List<Role> roleList = roleService.getRoleListByWhere(roleBean);
-		PageInfo<Role> pageInfo = new PageInfo<Role>(roleList);
-		List<RoleBean> roleBeanList = new ArrayList<RoleBean>();
-		if(roleList != null && roleList.size() > 0){
-			for(Role role : roleList){
-				roleBean = new RoleBean();
-				roleBean.setId(role.getId());
-				roleBean.setRoleCode(role.getRoleCode());
-				roleBean.setRoleName(role.getRoleName());
-				roleBean.setCreater(role.getCreater());
-				roleBean.setCreateTime(DateUtil.formatDate(role.getCreateTime(), DateUtil.FULL_DATE_FORMAT));
-				roleBeanList.add(roleBean);
+		List<User> userList = userService.getUserListByWhere(userBean);
+		PageInfo<User> pageInfo = new PageInfo<User>(userList);
+		List<UserBean> userBeanList = new ArrayList<UserBean>();
+		if(userList != null && userList.size() > 0){
+			for(User user : userList){
+				userBean = new UserBean();
+				userBean.setId(user.getId());
+				userBean.setUserCode(user.getUserCode());
+				userBean.setUserName(user.getUserName());
+				userBean.setTelephone(user.getTelephone());
+				userBean.setStatus(user.getStatus());
+				userBean.setCreater(user.getCreater());
+				if(user.getRole() != null){
+					userBean.setRoleName(user.getRole().getRoleName());
+				}
+				userBean.setCreateTime(DateUtil.formatDate(user.getCreateTime(), DateUtil.FULL_DATE_FORMAT));
+				userBeanList.add(userBean);
 			}
 		}
-		rtnDataList.setRows(roleBeanList);
+		rtnDataList.setRows(userBeanList);
 		rtnDataList.setStatus("success");
 		rtnDataList.setMessage("");
 		rtnDataList.setTotal(pageInfo.getTotal());

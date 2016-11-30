@@ -177,7 +177,7 @@ public class MenuController extends GlobalExceptionHandler{
 		
 		MenuBean mb5 = new MenuBean();
 		mb5.setMenuid("112");
-		mb5.setIcon("icon-nav");
+		mb5.setIcon("icon-lock");
 		mb5.setMenuname("权限管理");
 		mb5.setUrl("/authority/initAuthority.action");
 		menus.add(mb5);
@@ -188,6 +188,13 @@ public class MenuController extends GlobalExceptionHandler{
 		mb1.setMenuname("角色管理");
 		mb1.setUrl("/role/initRole.action");
 		menus.add(mb1);
+		
+		MenuBean mb3 = new MenuBean();
+		mb3.setMenuid("113");
+		mb3.setIcon("icon-man");
+		mb3.setMenuname("用户管理");
+		mb3.setUrl("/user/initUser.action");
+		menus.add(mb3);
 		
 		
 		return child;
