@@ -214,10 +214,13 @@ public class RoleController extends GlobalExceptionHandler
 	public  @ResponseBody ResultBean  checkRoleValue(
 			@RequestParam(value="id",required=false) String id,
 			@RequestParam(value="code",required=false) String code,
-			ModelMap model,HttpSession httpSession) 
+			ModelMap model,HttpSession httpSession)
 	{
 		ResultBean resultBean = new ResultBean ();
-		resultBean.setExist(false);
+		RoleBean roleBean = new RoleBean();
+		roleBean.setId(id);
+		roleBean.setRoleCode(code);
+		resultBean.setExist(roleService.checkCode(roleBean));
 		return resultBean;
 	}
 	

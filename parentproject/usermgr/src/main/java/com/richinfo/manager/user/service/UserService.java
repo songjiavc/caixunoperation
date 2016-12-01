@@ -64,4 +64,14 @@ public interface UserService {
 	  * @return 
 	  */
 	public ResultBean deleteUserByIds(String ids);
+	
+	/** 
+	  * @Description: 判断逻辑主键code是否重复
+	  * @author songjia@richinfo.cn
+	  * @date 2016年11月25日 上午8:55:53 
+	  * 
+	  * @param authority
+	  * @return 
+	  */
+	public boolean checkValue(UserBean userBean);
 }

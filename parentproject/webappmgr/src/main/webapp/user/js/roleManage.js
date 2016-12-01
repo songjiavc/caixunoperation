@@ -462,7 +462,6 @@ function checkCodeOrName(id,code,name)
 	
 	data.id = id;
 	data.code = code;
-	data.name = name;
 	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式

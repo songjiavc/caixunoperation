@@ -111,5 +111,19 @@ public class RoleServiceImpl implements RoleService {
 		return roleMapper.getRoleRelaAuthByRoleId(id);
 	}
 
+	@Override
+	public boolean checkCode(RoleBean roleBean) {
+		ResultBean resultBean = new ResultBean();
+		Role role = new Role();
+		role.setId(roleBean.getId());
+		role.setRoleCode(roleBean.getRoleCode());
+		Integer count = roleMapper.checkValue(role);
+		if(count > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	
 }

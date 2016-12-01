@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import com.alibaba.druid.util.StringUtils;
 import com.richinfo.manager.common.bean.ResultBean;
 import com.richinfo.manager.common.util.MD5Util;
+import com.richinfo.manager.user.bean.AuthorityBean;
 import com.richinfo.manager.user.bean.UserBean;
 import com.richinfo.manager.user.dao.UserMapper;
 import com.richinfo.manager.user.dao.UserRelaRoleMapper;
+import com.richinfo.manager.user.model.Authority;
 import com.richinfo.manager.user.model.User;
 import com.richinfo.manager.user.service.UserService;
 
@@ -35,12 +37,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserBean getUserById(String id) {
 		User user = userMapper.getUserById(id);
-		UserBean roleBean = new UserBean();
-		roleBean.setId(user.getId());
-		roleBean.setUserCode(user.getUserCode());
-		roleBean.setUserName(user.getUserName());
-		roleBean.setTelephone(user.getTelephone());
-		return roleBean;
+		UserBean userBean = new UserBean();
+		userBean.setId(user.getId());
+		userBean.setUserCode(user.getUserCode());
+		userBean.setUserName(user.getUserName());
+		userBean.setTelephone(user.getTelephone());
+		userBean.setStatus(user.getStatus());
+		return userBean;
 	}
 
 	@Override
@@ -80,6 +83,7 @@ public class UserServiceImpl implements UserService {
 				user.setUserName(userBean.getUserName());
 				user.setTelephone(userBean.getTelephone());
 				user.setPassword(MD5Util.MD5(userBean.getPassword()));  //密码用MD5加密
+				user.setStatus(userBean.getStatus());
 				user.setCreater(userBean.getCreater());
 				user.setCreateTime(new Timestamp(System.currentTimeMillis()));
 				user.setStatus('1');
@@ -91,6 +95,8 @@ public class UserServiceImpl implements UserService {
 				user.setId(id);
 				user.setUserCode(userBean.getUserCode());
 				user.setUserName(userBean.getUserName());
+				user.setTelephone(userBean.getTelephone());
+				user.setStatus(userBean.getStatus());
 				user.setUpdater(userBean.getUpdater());
 				user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 				user.setStatus('1');
@@ -128,4 +134,17 @@ public class UserServiceImpl implements UserService {
 		return userMapper.getUserRelaRoleByUserId(id);
 	}
 
+	@Override
+	public boolean checkValue(UserBean userBean) {
+		User user = new User();
+		user.setUserCode(userBean.getUserCode());
+		user.setId(userBean.getId());
+		Integer count = userMapper.checkValue(user);
+		if(count > 0){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
 }

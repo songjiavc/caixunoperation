@@ -83,18 +83,18 @@
     
     <select id="getUserRelaRoleByUserId" parameterType="java.lang.String" resultMap="userRelaRole">
     	SELECT 
-    		user.id,user.user_code,user.user_name,user.telephone,
+    		ur.id,ur.user_code,ur.user_name,ur.telephone,
     		role.id as roleId,role.role_code as roleCode,role.role_name as roleName
     	FROM 
-    		T_YWPT_USER user LEFT JOIN T_YWPT_USER_RELA_ROLE rela ON user.id = rela.user_id 
+    		T_YWPT_USER ur LEFT JOIN T_YWPT_USER_RELA_ROLE rela ON ur.id = rela.user_id 
     		LEFT JOIN T_YWPT_ROLE role ON rela.role_id = role.id
     	WHERE 
-    		user.ID = #{id}
+    		ur.ID = #{id}
     </select>
     
     <insert id="insertUser" parameterType="com.richinfo.manager.user.model.User">
-    	INSERT INTO T_YWPT_USER(id,user_code,user_name,status,creater,create_time)
-    	VALUES(#{id},#{userCode},#{userName},#{status},#{creater},#{createTime})
+    	INSERT INTO T_YWPT_USER(id,user_code,user_name,telephone,password,status,creater,create_time)
+    	VALUES(#{id},#{userCode},#{userName},#{telephone},#{password},#{status},#{creater},#{createTime})
     </insert>
     
     <delete id="deleteRoleById" parameterType="String">
@@ -140,5 +140,21 @@
 		</foreach>
 
 	</delete>
+	
+	<!-- checkvalue 检查 权限名称和权限编码都不可以相同 -->
+    <select id="checkValue" resultType="java.lang.Integer" parameterType="com.richinfo.manager.user.model.User">
+    	SELECT 
+    		count(1)
+    	FROM 
+    		T_YWPT_USER
+        <where>
+          <if test="id != null and id != ''">
+                AND  id != #{id}
+          </if>
+          <if test="userCode != null and userCode != ''">
+                AND  user_code = #{userCode}
+          </if>
+        </where>
+    </select>
     
 </mapper>

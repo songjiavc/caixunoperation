@@ -99,6 +99,7 @@ function updateAuth(code)
 				status:data.status,
 				authImg:data.authImg
 			});
+			$('#idU').val(data.id);
 			$('#parentAuthNameU').val(selectAuthTreeNode.name);
 	   		$('#parentAuthIdU').val(selectAuthTreeNode.id);
         },
@@ -367,7 +368,7 @@ $.extend($.fn.validatebox.defaults.rules, {
             }
         	else
     		{
-        		rules.checkCodes.message = "当前权限编码已存在"; 
+        		rules.checkCodes.message = "当前权限编码已存在";
                 return !checkCode($("#"+param[1]).val(),value,'');
     		}
         }

@@ -54,4 +54,13 @@ public interface RoleService {
 	  */
 	public ResultBean deleteRoleByIds(String ids);
 	
+	/** 
+	  * @Description: 判断角色编号是否重复,其中包括修改时的重复判断
+	  * @author songjia@richinfo.cn
+	  * @date 2016年12月1日 下午1:42:18 
+	  * @param roleBean
+	  * @return 
+	  */
+	public boolean checkCode(RoleBean roleBean);
+	
 }

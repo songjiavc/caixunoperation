@@ -1,7 +1,9 @@
 package com.richinfo.manager.user.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,7 +26,6 @@ import com.richinfo.manager.common.bean.ResultBeanDataList;
 import com.richinfo.manager.common.exception.GlobalExceptionHandler;
 import com.richinfo.manager.common.util.DateUtil;
 import com.richinfo.manager.common.util.LoginUtils;
-import com.richinfo.manager.user.bean.RoleBean;
 import com.richinfo.manager.user.bean.UserBean;
 import com.richinfo.manager.user.model.Role;
 import com.richinfo.manager.user.model.User;
@@ -76,12 +77,19 @@ public class UserController extends GlobalExceptionHandler
 	  * @return
 	  * @throws Exception 
 	  */
-	@RequestMapping(value = "/getDetailUser", method = RequestMethod.GET)
-	public @ResponseBody UserBean getDetailUser(
+	@RequestMapping(value = "/getDetailAccount", method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getDetailUser(
 			@RequestParam(value="id",required=true) String id,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
-		return userService.getUserById(id);
+		UserBean userBean = userService.getUserById(id);
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		rtnMap.put("id", userBean.getId());
+		rtnMap.put("userCode", userBean.getUserCode());
+		rtnMap.put("userName", userBean.getUserName());
+		rtnMap.put("status", userBean.getStatus());
+		rtnMap.put("telephone", userBean.getTelephone());
+		return rtnMap;
 	}
 	 
 	/**
@@ -90,12 +98,19 @@ public class UserController extends GlobalExceptionHandler
 	  * @date 2016年11月24日 上午9:56:29
 	  */
 	 @RequestMapping(value = "/getRoleOfUserId", method = RequestMethod.GET)
-	 public @ResponseBody Role getAuthListOfRole(
+	 public @ResponseBody ResultBeanDataList<Role> getAuthListOfRole(
 			@RequestParam(value="id",required=true) String id,
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
+		 ResultBeanDataList<Role> resultBeanData = new ResultBeanDataList<Role>();
 		 User user = userService.getUserRelaRoleByUserId(id);
-		 return user.getRole();
+		 List<Role> roleList = new ArrayList<Role>();
+		 if(user.getRole() != null){
+			 roleList.add(user.getRole());
+		 }
+		 resultBeanData.setRows(roleList);
+		 resultBeanData.setTotal(1);
+		 return resultBeanData;
 	}
 	 
 	
@@ -117,6 +132,7 @@ public class UserController extends GlobalExceptionHandler
 			@RequestParam(value="name",required=false) String name,
 			@RequestParam(value="telephone",required=false) String telephone,
 			@RequestParam(value="password",required=false) String password,
+			@RequestParam(value="status",required=false) Character status,
 			ModelMap model,HttpSession httpSession)
 	{
 		UserBean userBean = new UserBean();
@@ -125,6 +141,7 @@ public class UserController extends GlobalExceptionHandler
 		userBean.setUserName(name);
 		userBean.setPassword(password);
 		userBean.setTelephone(telephone);
+		userBean.setStatus(status);
 		if(StringUtils.isEmpty(id)){
 			userBean.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
 		}else{
@@ -139,7 +156,7 @@ public class UserController extends GlobalExceptionHandler
 	 * @author songjia@richinfo.cn
 	 * @date 2015年10月19日 下午2:30:04
 	 */
-	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteAccountByIds", method = RequestMethod.POST)
 	public @ResponseBody ResultBean deleteUser(
 			@RequestParam(value="ids",required=false) String ids,
 			ModelMap model,HttpSession httpSession) throws Exception
@@ -218,14 +235,17 @@ public class UserController extends GlobalExceptionHandler
 	 * @author songjia@richinfo.cn
 	 * @date 2015年10月20日 下午2:14:25
 	 */
-	@RequestMapping(value = "/checkRoleValue", method = RequestMethod.POST)
-	public  @ResponseBody ResultBean  checkRoleValue(
+	@RequestMapping(value = "/checkValue", method = RequestMethod.GET)
+	public  @ResponseBody ResultBean  checkValue(
 			@RequestParam(value="id",required=false) String id,
 			@RequestParam(value="code",required=false) String code,
-			ModelMap model,HttpSession httpSession) 
+			ModelMap model,HttpSession httpSession)
 	{
 		ResultBean resultBean = new ResultBean ();
-		resultBean.setExist(false);
+		UserBean userBean = new UserBean();
+		userBean.setId(id);
+		userBean.setUserCode(code);
+		resultBean.setExist(userService.checkValue(userBean));
 		return resultBean;
 	}
 	

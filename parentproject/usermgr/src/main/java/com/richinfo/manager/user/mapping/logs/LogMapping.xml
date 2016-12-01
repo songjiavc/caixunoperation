@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.richinfo.manager.user.dao.logs.LogMapper">
+	
+	<insert id="saveLog" parameterType="Map">
+		
+		INSERT INTO T_YWPT_LOGS(ID,OPERATION_TYPE,BUSSINESS_TYPE,CONTENT,CREATER,CREATE_TIME)
+		VALUES(#{id},#{operationType},#{bussinessType},#{content},#{creater},#{createTime})
+		
+	</insert>
+
+    
+</mapper>

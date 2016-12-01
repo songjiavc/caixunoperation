@@ -117,22 +117,18 @@ function initDatagrid()
 		        dataType: "json",
 		        success: function (data) {
 					$('#updateAccountForm').form('load',{
-						id:data.id,
-						code:data.code,
-						name:data.name,
-						password:data.password,
-						confirmPassword:data.password,
+						id : data.id,
+						code:data.userCode,
+						name:data.userName,
 						telephone:data.telephone,
-						status:data.status,
-						privince:data.privince,
-						city:data.city,
-						lotteryType:data.lotteryType
+						status:data.status
 					});
-					
+					/*
 					//初始化省份combobox
 					initProvince("update", "privinceU", data.province);
 					//初始化市级区域combobox
 					initCities('update','cityU',data.city,data.province);
+					*/
 					
 		        },
 		        error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -262,14 +258,16 @@ function initDatagrid()
 	/**
 	 * 校验code唯一性
 	 */
-	function checkCode(code)
+	function checkCode(id,code)
 	{
+		debugger;
 		var flag = false;//当前值可用，不存在
 		$.ajax({
 			async: false,   //设置为同步获取数据形式
 	        type: "get",
 	        url: contextPath+'/user/checkValue.action',
 	        data:{
+	        	id : id,
 	        	code : code
 	        },
 	        dataType: "json",
@@ -354,25 +352,13 @@ function initDatagrid()
 //				striped:true,
 			columns:[[
 					{field:'id',hidden:true},
-					{field:'roleCode',title:'角色编码',width:120,align:'left'},
-			        {field:'roleName',width:120,title:'角色名称'}
+					{field:'roleCode',width:120,title:'角色编码',align:'center'},
+			        {field:'roleName',width:120,title:'角色名称',align:'center'}
 			    ]],  
 		    onLoadSuccess:function(data){
 		    	if(data.rows.length==0){
 					var body = $(this).data().datagrid.dc.body2;
 					body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="8">没有数据</td></tr>');
-				}else{
-					//获取已经选择的角色数据
-					var selectedRows = $('#selectedRoleGrid').datagrid('getRows');
-					//获取待选择的角色列表
-					var selectRows = $('#selectRoleGrid').datagrid('getRows');
-					$.each(selectedRows,function(i,selectedRow){
-						$.each(selectRows,function(j,selectRow){
-							if(selectedRow.roleId == selectRow.id){
-								$('#selectRoleGrid').datagrid('checkRow',j);
-							}
-						});
-					});
 				}
 		    },
 		    onCheck : function(rowIndex,rowData){
@@ -381,7 +367,7 @@ function initDatagrid()
 		    	if(index == -1){
 			    	$('#selectedRoleGrid').datagrid('insertRow',{
 			            row :  {
-			            	roleId : rowData.id,
+			            	id : rowData.id,
 			            	roleCode : rowData.roleCode,
 			            	roleName : rowData.roleName
 			            }
@@ -431,7 +417,7 @@ function initDatagrid()
 		var selectedRows = $('#selectedRoleGrid').datagrid('getRows');
     	var index = -1;
     	$.each(selectedRows,function(i,selectedRow){
-    		if(row.id == selectedRow.roleId){
+    		if(row.id == selectedRow.id){
     			index = i;
     		}
     	});
@@ -440,8 +426,6 @@ function initDatagrid()
 	//定义全局变量parentUid 存放上级编码
 	function initSelectedRoleGrid(id){
 		$('#selectedRoleGrid').datagrid({
-			singleSelect:false,
-			rownumbers:false,
 			url:contextPath + '/user/getRoleOfUserId.action',//'datagrid_data1.json',
 			method:'get',
 			queryParams : {
@@ -449,13 +433,12 @@ function initDatagrid()
 			},
 			border:false,
 			fitColumns:true,
+			pagination:false,
 			collapsible:false,
 			columns:[[  //{"roleId":"ff808181516ab01e01516ab2bd7e0000","code":"SC_DL","name":"市场代理","parentRolename":"市场专员","parentRole":"ff808181514698fb015146a085460001"}
 					{field:'id',hidden:true},    //userRelaRole 关联关系表主键
-					{field:'userId',hidden:true},	//userId  用户主键
-					{field:'roleId',hidden:true},	//角色主键
-					{field:'roleCode',width:120,title:'角色编码'},	//角色主键
-			        {field:'roleName',width:120,title:'角色名称'}
+					{field:'roleCode',width:120,title:'角色编码',align:'center'},	//角色主键
+			        {field:'roleName',width:120,title:'角色名称',align:'center'}
 					]],  
 		    onLoadSuccess:function(data){
 		    	if(data.rows.length==0){
@@ -466,19 +449,20 @@ function initDatagrid()
 					var selectedRows = $('#selectedRoleGrid').datagrid('getRows');
 					//获取待选择的角色列表
 					var selectRows = $('#selectRoleGrid').datagrid('getRows');
-					$.each(selectedRows,function(i,selectedRow){
-						$.each(selectRows,function(j,selectRow){
-							if(selectedRow.roleId == selectRow.id){
-								$('#selectRoleGrid').datagrid('selectRow',j);
-							}
+					if(selectedRows != undefined){
+						$.each(selectedRows,function(i,selectedRow){
+							$.each(selectRows,function(j,selectRow){
+								if(selectedRow.id == selectRow.id){
+									$('#selectRoleGrid').datagrid('selectRow',j);
+								}
+							});
 						});
-					});
+					}
 				}
 		    	initFlag = false;
 		    },
 		    onCheck : function(rowIndex,rowData){
 		    	//由于是单选所以如果单击已经选中的角色将会自动删除
-		    	rowData.id = rowData.roleId;
 	    		var index = getRowIndex(rowData);
 		    	$('#selectedRoleGrid').datagrid('deleteRow',index);
 		    	
@@ -512,7 +496,7 @@ function initDatagrid()
 	        url: contextPath+'/user/manageUserRelaRole.action',
 	        data: {
 	        	userId : userId,                  //传入将要设定角色的用户
-	        	role : rows.roleId
+	        	role : rows.id
 	        },
 	        dataType: "json",
 	        success: function (data) {
@@ -529,9 +513,11 @@ function initDatagrid()
 	
 	function selectRoleBeforeClose(){
 		var selectedRows = $('#selectedRoleGrid').datagrid('getRows');
-		$.each(selectedRows,function(i,selectedRow){
-			$('#selectedRoleGrid').datagrid('deleteRow',0);
-		});
+		if(selectedRows != undefined){
+			$.each(selectedRows,function(i,selectedRow){
+				$('#selectedRoleGrid').datagrid('deleteRow',0);
+			});
+		}
 	}
 	
 /**

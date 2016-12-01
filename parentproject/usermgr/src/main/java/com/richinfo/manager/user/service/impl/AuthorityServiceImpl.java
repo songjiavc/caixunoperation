@@ -89,10 +89,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	public boolean checkValue(AuthorityBean authorityBean) {
 		Authority authority = new Authority();
 		authority.setAuthCode(authorityBean.getCode());
-		authority.setAuthName(authorityBean.getAuthName());
-		authority.setStatus('1');
 		authority.setId(authorityBean.getId());
-		
 		Integer count = authorityMapper.checkValue(authority);
 		if(count > 0){
 			return true;

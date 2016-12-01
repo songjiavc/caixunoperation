@@ -112,4 +112,19 @@
 
 	</delete>
     
+     <!-- checkvalue 检查 权限名称和权限编码都不可以相同 -->
+    <select id="checkValue" resultType="java.lang.Integer" parameterType="com.richinfo.manager.user.model.Role">
+    	SELECT 
+    		count(1)
+    	FROM 
+    		t_ywpt_role
+        <where> 
+          <if test="id != null and id != ''">
+                AND  id != #{id}
+          </if>
+          <if test="roleCode != null and roleCode != ''">
+                AND  role_code = #{roleCode}
+          </if>
+        </where>
+    </select>
 </mapper>

@@ -66,7 +66,7 @@
           <if test="id != null and id != ''">
                 AND  id != #{id}
           </if>
-          <if test="code != null and code != ''">
+          <if test="authCode != null and authCode != ''">
                 AND  auth_code = #{authCode}
           </if>
         </where>

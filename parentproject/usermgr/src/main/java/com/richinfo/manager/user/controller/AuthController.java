@@ -153,13 +153,9 @@ public class AuthController extends BaseController{
 	public @ResponseBody ResultBean  checkValue(
 			@RequestParam(value="id",required=false) String id,
 			@RequestParam(value="code",required=false) String code,
-			@RequestParam(value="authname",required=false) String authName,
-			@RequestParam(value="status",required=false) String status,
 			ModelMap model,HttpSession httpSession) throws Exception {
 		AuthorityBean authorityBean = new AuthorityBean();
 		authorityBean.setCode(code);
-		authorityBean.setAuthName(authName);
-		authorityBean.setStatus('1');
 		authorityBean.setId(id);
 		ResultBean resultBean = new ResultBean();
 		resultBean.setExist(authorityService.checkValue(authorityBean));
